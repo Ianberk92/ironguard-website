@@ -437,6 +437,15 @@ body.menu-open { overflow: hidden; }   /* lock background scroll */
   align-items: start;
 }
 @media (min-width: 900px) { .founder { grid-template-columns: 320px 1fr; } }
+.founder img {
+  border-radius: 16px;
+  border: 1px solid var(--steel);
+}
+@media (max-width: 899px) {
+  /* single-column layout: keep the portrait a portrait, not a billboard */
+  .founder img { max-width: 280px; }
+}
+
 .founder-name {
   font-family: var(--font-mono);
   font-size: 13px;
