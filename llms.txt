@@ -1,0 +1,29 @@
+# Ironguard IT
+
+> High-accountability managed IT, security, and infrastructure partner for growing,
+> multi-site companies (75-500 employees) in energy, engineering, construction, and
+> technology. Tagline: "IT that takes ownership."
+
+Pricing is public: it starts at $150 per user per month, with most multi-site engagements landing between $150 and $200 once scoped. Ironguard supports companies everywhere; home markets: New York metro, SF Bay Area, San Diego, covering
+employee support, a security baseline (identity, MFA, endpoints, email), Microsoft 365
+administration, device lifecycle, vendor management, and executive reporting.
+Dedicated onsite coverage, hardware, travel, and major projects are scoped separately.
+
+## Key pages
+- [Managed IT (services + pricing + FAQ)](/managed-it.html)
+- [Services overview](/services.html)
+- [Cybersecurity](/cybersecurity.html)
+- [Microsoft 365 & Cloud](/microsoft-365.html)
+- [Networks & Infrastructure](/networks-infrastructure.html)
+- [Automation & AI Governance](/automation-ai.html)
+- [Why Ironguard (fit and process)](/why-ironguard.html)
+- [What managed IT actually costs](/insights/what-managed-it-costs.html)
+- [FAQ: pricing, contracts, security, switching](/faq.html)
+- [How to evaluate or replace an MSP](/msp-evaluation-guide.html)
+- [Cyber-insurance technology readiness](/cyber-insurance-readiness.html)
+- [Co-managed IT](/co-managed-it.html)
+- [Case studies](/case-studies.html)
+- [Insights (executive IT guidance)](/insights.html)
+- [Book an IT Ownership Review](/contact.html)
+
+Contact: sales@ironguardit.com (new inquiries), support@ironguardit.com or https://halopsa.ironguardit.com/portal (existing clients).

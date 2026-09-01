@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Before/after — Ironguard social template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet"><style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --carbon:#0E1B2A; --iron:#34404B; --forge:#E4572E; --ember:#A93817;
+    --cloud:#F6F7F8; --steel:#AAB4BE; --signal:#1F7A50;
+  }
+  body { font-family: 'Inter', sans-serif; background:#555; }
+  .card {
+    width: 1200px; height: 1200px; position: relative; overflow: hidden;
+    background: var(--carbon); color: var(--cloud);
+    padding: 96px; display: flex; flex-direction: column;
+  }
+  .card.light { background: var(--cloud); color: var(--carbon); }
+  /* subtle topology grid */
+  .card::before {
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background-image: linear-gradient(rgba(170,180,190,0.06) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(170,180,190,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .card.light::before {
+    background-image: linear-gradient(rgba(52,64,75,0.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(52,64,75,0.05) 1px, transparent 1px);
+  }
+  .bracket { position:absolute; left:96px; top:96px; bottom:96px; width:28px;
+    border:5px solid var(--forge); border-right:none; }
+  .inner { position:relative; margin-left:76px; display:flex; flex-direction:column; height:100%; }
+  .kicker { font-family:'IBM Plex Mono', monospace; font-weight:500; font-size:26px;
+    letter-spacing:0.16em; color:var(--forge); text-transform:uppercase; }
+  h1 { font-family:'Sora', sans-serif; font-weight:600; font-size:84px; line-height:1.12;
+    letter-spacing:-0.01em; margin-top:40px; max-width:12ch; }
+  .card.light h1 { color: var(--carbon); }
+  .sub { font-size:34px; line-height:1.5; color:var(--steel); margin-top:40px; max-width:30ch; }
+  .card.light .sub { color:#3d4650; }
+  .proof { font-family:'IBM Plex Mono', monospace; font-weight:500; font-size:24px;
+    letter-spacing:0.12em; color:var(--steel); margin-top:auto; padding-right:360px; line-height:1.5; }
+  .proof b { color:var(--cloud); font-weight:500; }
+  .card.light .proof b { color: var(--carbon); }
+  .brand { position:absolute; right:96px; bottom:88px; display:flex; align-items:center; gap:18px;
+    font-family:'Sora', sans-serif; font-weight:600; font-size:28px; letter-spacing:0.02em; }
+  .brand span { color: var(--steel); font-weight:400; }
+  .check { display:flex; gap:28px; align-items:flex-start; margin-top:44px; font-size:33px; line-height:1.45; }
+  .check .n { font-family:'IBM Plex Mono', monospace; color:var(--forge); font-size:30px; padding-top:4px; }
+</style></head><body>
+<div class="card light" style="padding:0;">
+  <div style="position:relative; height:50%; padding:88px 96px; z-index:1;">
+    <div class="kicker" style="color:var(--iron);">Before</div>
+    <h1 style="font-size:56px; margin-top:28px; max-width:18ch;">Five vendors, four owners, no answer to “who owns this?”</h1>
+  </div>
+  <div style="position:relative; height:50%; background:var(--carbon); color:var(--cloud); padding:88px 96px; z-index:1;">
+    <div class="kicker">After</div>
+    <h1 style="font-size:56px; margin-top:28px; max-width:18ch; color:var(--cloud);">One operating model. One accountable team.</h1>
+    <div class="proof" style="position:absolute; bottom:88px; left:96px;">// STATUS: <b style="color:var(--cloud);">OWNED</b></div>
+    <div class="brand"><svg width="52" height="52" viewBox="0 0 100 100" fill="none">
+      <path d="M14 14 H50 V26 H26 V74 H38 V86 H14 Z" fill="#F6F7F8"/>
+      <path d="M86 86 H50 V74 H74 V26 H62 V14 H86 Z" fill="#F6F7F8"/>
+      <rect x="38" y="38" width="24" height="24" fill="#E4572E"/></svg><div>IRONGUARD <span>IT</span></div></div>
+  </div>
+</div></body></html>
