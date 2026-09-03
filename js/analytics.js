@@ -18,7 +18,11 @@
     var a = e.target.closest('a');
     if (!a) return;
     var href = a.getAttribute('href') || '';
-    if (a.classList.contains('btn')) {
+    if (href.indexOf('outlook.office.com/book') !== -1) {
+      /* The booking scheduler is the primary conversion — tracked separately
+         so GA4 can treat it as the key event. */
+      track('booking_click', { label: a.textContent.trim() });
+    } else if (a.classList.contains('btn')) {
       track('cta_click', { label: a.textContent.trim(), href: href });
     } else if (href.indexOf('mailto:') === 0) {
       track('email_click', { href: href });
