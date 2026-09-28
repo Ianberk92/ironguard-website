@@ -140,7 +140,7 @@
         '<h3 style="color: var(--white); font-family: var(--font-head); font-size: 22px; margin-bottom: 12px;">Got it' +
         (name ? ', ' + name.split(' ')[0] : '') + '.</h3>' +
         '<p style="color: #ccd3d9;">Your email draft is open and ready to send. A real person reads every inquiry — no sales queue, no drip campaign.</p>' +
-        '<p style="margin-top: 16px;"><a class="btn btn-primary" href="https://outlook.office.com/book/IronguardITSupport@Ironguardit.com/?ismsaljsauthenabled" target="_blank" rel="noopener">Pick a time now &mdash; schedule online</a></p>' +
+        '<p style="margin-top: 16px;"><a class="btn btn-primary" href="https://bookings.cloud.microsoft/book/IronguardITFreeConsultation@Ironguardit.com/?ismsaljsauthenabled" target="_blank" rel="noopener">Pick a time now &mdash; schedule online</a></p>' +
         '<p style="margin-top: 12px;"><a href="' + prefix + 'thank-you.html" style="color: var(--trust-light);">What happens next &rarr;</a></p>';
       form.setAttribute('aria-live', 'polite');
     });
