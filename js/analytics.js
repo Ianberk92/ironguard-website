@@ -10,7 +10,13 @@
   window.dataLayer = window.dataLayer || [];
 
   function track(event, params) {
-    window.dataLayer.push(Object.assign({ event: event, page: location.pathname }, params || {}));
+    var payload = Object.assign({ page: location.pathname }, params || {});
+    /* gtag (GA4) is the live pipeline; the dataLayer object push remains for a
+       future tag manager. Both fire so neither integration starves the other. */
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', event, payload);
+    }
+    window.dataLayer.push(Object.assign({ event: event }, payload));
   }
 
   // CTA, mailto, and tel clicks
