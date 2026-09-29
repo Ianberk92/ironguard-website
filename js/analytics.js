@@ -24,7 +24,7 @@
     var a = e.target.closest('a');
     if (!a) return;
     var href = a.getAttribute('href') || '';
-    if (href.indexOf('outlook.office.com/book') !== -1) {
+    if (href.indexOf('outlook.office.com/book') !== -1 || href.indexOf('bookings.cloud.microsoft') !== -1) {
       /* The booking scheduler is the primary conversion — tracked separately
          so GA4 can treat it as the key event. */
       track('booking_click', { label: a.textContent.trim() });
