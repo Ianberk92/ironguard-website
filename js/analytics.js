@@ -9,6 +9,15 @@
 
   window.dataLayer = window.dataLayer || [];
 
+  /* Google Ads conversion plumbing. The gtag loader (GA4, G-PZR9WW3QEG) is on
+     every page; registering the Ads account here lets the same loader deliver
+     Ads conversions without touching each page. */
+  var ADS_ID = 'AW-18483507018';
+  var ADS_LEAD_LABEL = ADS_ID + '/HXECCJbj-4odEMrez-1E'; // "Submit lead form" action
+  if (typeof window.gtag === 'function') {
+    window.gtag('config', ADS_ID);
+  }
+
   function track(event, params) {
     var payload = Object.assign({ page: location.pathname }, params || {});
     /* gtag (GA4) is the live pipeline; the dataLayer object push remains for a
@@ -26,8 +35,16 @@
     var href = a.getAttribute('href') || '';
     if (href.indexOf('outlook.office.com/book') !== -1 || href.indexOf('bookings.cloud.microsoft') !== -1) {
       /* The booking scheduler is the primary conversion — tracked separately
-         so GA4 can treat it as the key event. */
+         so GA4 can treat it as the key event, and reported to Google Ads as
+         the "Submit lead form" conversion action. */
       track('booking_click', { label: a.textContent.trim() });
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', 'conversion', {
+          send_to: ADS_LEAD_LABEL,
+          value: 1.0,
+          currency: 'USD'
+        });
+      }
     } else if (a.classList.contains('btn')) {
       track('cta_click', { label: a.textContent.trim(), href: href });
     } else if (href.indexOf('mailto:') === 0) {
