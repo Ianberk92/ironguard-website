@@ -119,7 +119,27 @@
       var driver = form.querySelector('#f-driver') ? form.querySelector('#f-driver').value : '';
       var details = form.querySelector('#f-details') ? form.querySelector('#f-details').value.trim() : '';
 
-      if (!isSpam) {
+      /* Submission posts to a Power Automate flow that emails the inquiry.
+         Spam (honeypot/too-fast) gets the same thank-you without a send.
+         If the endpoint is unreachable, fall back to the mailto draft so
+         no inquiry is ever silently dropped. */
+      var ENDPOINT = 'https://default579ee38616f74687a68658259001b2.ee.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/35676cc09af445cc99e87d829a618ee4/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VXwfeCbA_oX56ZxP-PLXvHfeexLxeQKATzv-wOsykPY';
+
+      function showThanks(viaEmailDraft) {
+        var prefix = document.querySelector('.article-body') ? '../' : '';
+        form.innerHTML =
+          '<h3 style="color: var(--white); font-family: var(--font-head); font-size: 22px; margin-bottom: 12px;">Got it' +
+          (name ? ', ' + name.split(' ')[0] : '') + '.</h3>' +
+          '<p style="color: #ccd3d9;">' + (viaEmailDraft
+            ? 'Your email draft is open and ready to send. '
+            : 'Your inquiry is in — ') +
+          'A real person reads every inquiry — no sales queue, no drip campaign.</p>' +
+          '<p style="margin-top: 16px;"><a class="btn btn-primary" href="https://bookings.cloud.microsoft/book/IronguardITFreeConsultation@Ironguardit.com/?ismsaljsauthenabled" target="_blank" rel="noopener">Pick a time now &mdash; schedule online</a></p>' +
+          '<p style="margin-top: 12px;"><a href="' + prefix + 'thank-you.html" style="color: var(--trust-light);">What happens next &rarr;</a></p>';
+        form.setAttribute('aria-live', 'polite');
+      }
+
+      function mailtoFallback() {
         var subject = 'IT Ownership Review request — ' + (email.split('@')[1] || name);
         var body =
           'Name: ' + name + '\n' +
@@ -127,22 +147,25 @@
           'Company size: ' + size + '\n' +
           (driver ? 'What is driving this: ' + driver + '\n' : '') +
           (details ? '\nWhat needs an owner:\n' + details + '\n' : '');
-
         window.location.href =
           'mailto:' + INBOX +
           '?subject=' + encodeURIComponent(subject) +
           '&body=' + encodeURIComponent(body);
+        showThanks(true);
       }
 
-      /* Inline thank-you experience replaces the form */
-      var prefix = document.querySelector('.article-body') ? '../' : '';
-      form.innerHTML =
-        '<h3 style="color: var(--white); font-family: var(--font-head); font-size: 22px; margin-bottom: 12px;">Got it' +
-        (name ? ', ' + name.split(' ')[0] : '') + '.</h3>' +
-        '<p style="color: #ccd3d9;">Your email draft is open and ready to send. A real person reads every inquiry — no sales queue, no drip campaign.</p>' +
-        '<p style="margin-top: 16px;"><a class="btn btn-primary" href="https://bookings.cloud.microsoft/book/IronguardITFreeConsultation@Ironguardit.com/?ismsaljsauthenabled" target="_blank" rel="noopener">Pick a time now &mdash; schedule online</a></p>' +
-        '<p style="margin-top: 12px;"><a href="' + prefix + 'thank-you.html" style="color: var(--trust-light);">What happens next &rarr;</a></p>';
-      form.setAttribute('aria-live', 'polite');
+      if (isSpam) { showThanks(false); return; }
+
+      fetch(ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name, email: email, size: size,
+          driver: driver, details: details, page: location.pathname
+        })
+      }).then(function (res) {
+        if (res.ok) { showThanks(false); } else { mailtoFallback(); }
+      }).catch(function () { mailtoFallback(); });
     });
   }
 
