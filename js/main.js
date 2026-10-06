@@ -139,7 +139,22 @@
         form.setAttribute('aria-live', 'polite');
       }
 
+      function trackLead(method) {
+        /* GA4 form_submit + Google Ads "Submit lead form" conversion.
+           The send_to label must match ADS_LEAD_LABEL in analytics.js.
+           Never called on the spam path — only real submissions count. */
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'form_submit', { form_destination: method, page: location.pathname });
+          window.gtag('event', 'conversion', {
+            send_to: 'AW-18483507018/HXECCJbj-4odEMrez-1E',
+            value: 1.0,
+            currency: 'USD'
+          });
+        }
+      }
+
       function mailtoFallback() {
+        trackLead('mailto_fallback');
         var subject = 'IT Ownership Review request — ' + (email.split('@')[1] || name);
         var body =
           'Name: ' + name + '\n' +
@@ -164,7 +179,7 @@
           driver: driver, details: details, page: location.pathname
         })
       }).then(function (res) {
-        if (res.ok) { showThanks(false); } else { mailtoFallback(); }
+        if (res.ok) { trackLead('power_automate'); showThanks(false); } else { mailtoFallback(); }
       }).catch(function () { mailtoFallback(); });
     });
   }
