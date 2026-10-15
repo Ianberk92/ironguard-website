@@ -1,7 +1,7 @@
 # Ironguard IT
 
 > High-accountability managed IT, security, and infrastructure partner for growing,
-> multi-site companies (75-500 employees) in energy, engineering, construction, and
+> multi-site companies (50-500 employees) in energy, engineering, construction, and
 > technology. Tagline: "IT that takes ownership."
 
 Pricing is public: it starts at $150 per user per month, with most multi-site engagements landing between $150 and $200 once scoped. Ironguard supports companies everywhere; home markets: New York metro, SF Bay Area, San Diego, covering
