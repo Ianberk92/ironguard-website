@@ -9,6 +9,12 @@ employee support, a security baseline (identity, MFA, endpoints, email), Microso
 administration, device lifecycle, vendor management, and executive reporting.
 Dedicated onsite coverage, hardware, travel, and major projects are scoped separately.
 
+Ironguard is a team-based provider — leadership, IT operations and support, plus a
+vetted contractor bench — with vendor partnerships across Microsoft, Google, AWS,
+Dell, Lenovo, Cisco, and Meraki. A monthly license and spend review is included in
+managed service; a recent cellular-carrier consolidation saved a client roughly
+$15,000 per year. AI governance and AI spend analysis are core offerings.
+
 ## Key pages
 - [Managed IT (services + pricing + FAQ)](/managed-it.html)
 - [Services overview](/services.html)
