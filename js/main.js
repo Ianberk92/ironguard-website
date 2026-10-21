@@ -179,13 +179,34 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: name, email: email, size: size,
-          driver: driver, details: details, page: location.pathname
+          driver: driver, details: details, page: location.pathname,
+          attribution: (function () {
+            try { return JSON.parse(sessionStorage.getItem('ig_attr') || '{}'); }
+            catch (e) { return {}; }
+          })()
         })
       }).then(function (res) {
         if (res.ok) { trackLead('power_automate'); showThanks(false); } else { mailtoFallback(); }
       }).catch(function () { mailtoFallback(); });
     });
   }
+
+  /* ---------- First-touch attribution (for CRM lead records) ---------- */
+  try {
+    if (!sessionStorage.getItem('ig_attr')) {
+      var q = new URLSearchParams(location.search);
+      var attr = {
+        utm_source: q.get('utm_source') || '',
+        utm_medium: q.get('utm_medium') || '',
+        utm_campaign: q.get('utm_campaign') || '',
+        utm_term: q.get('utm_term') || '',
+        gclid: q.get('gclid') || '',
+        referrer: document.referrer || '',
+        landing: location.pathname
+      };
+      sessionStorage.setItem('ig_attr', JSON.stringify(attr));
+    }
+  } catch (e) { /* storage blocked: attribution is best-effort */ }
 
   /* ---------- Footer year ---------- */
   var yearEl = document.querySelector('#year');
