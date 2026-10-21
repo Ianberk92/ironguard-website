@@ -12,11 +12,13 @@
   if (toggle && menu) {
     var firstLink = menu.querySelector('a');
 
-    function openMenu() {
+    function openMenu(fromKeyboard) {
       menu.classList.add('open');
       document.body.classList.add('menu-open'); // lock background scroll
       toggle.setAttribute('aria-expanded', 'true');
-      if (firstLink) firstLink.focus();          // focus moves into menu
+      // Keyboard users get focus moved into the menu; touch/mouse users don't
+      // see a focus ring jump onto the first link.
+      if (firstLink && fromKeyboard) firstLink.focus();
     }
     function closeMenu(returnFocus) {
       menu.classList.remove('open');
@@ -25,9 +27,9 @@
       if (returnFocus) toggle.focus();           // focus returns on close
     }
 
-    toggle.addEventListener('click', function () {
-      if (menu.classList.contains('open')) closeMenu(true);
-      else openMenu();
+    toggle.addEventListener('click', function (e) {
+      if (menu.classList.contains('open')) closeMenu(e.detail === 0);
+      else openMenu(e.detail === 0);   // detail 0 = keyboard activation
     });
 
     // Close on Escape (keyboard accessible)

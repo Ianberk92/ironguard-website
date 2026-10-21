@@ -94,8 +94,15 @@ p { margin: 0 0 1em; }
   position: fixed; top: 0; left: 0; right: 0; z-index: 60; transition: background .3s, border-color .3s, box-shadow .3s;
   border-bottom: 1px solid transparent;
 }
-.site-header.scrolled { background: rgba(11,22,36,.82); backdrop-filter: saturate(140%) blur(14px); border-color: var(--line-dark); }
-.site-header.light.scrolled { background: rgba(255,255,255,.86); border-color: var(--line); box-shadow: 0 10px 30px -20px rgba(11,22,36,.3); }
+/* The blur lives on a background layer, NOT on the header itself: a backdrop-filter on
+   the header would become the containing block for the fixed mobile menu and collapse
+   it to the header's height once the page is scrolled (bug fixed 2026-10-21). */
+.site-header::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; transition: background .3s; }
+.site-header.scrolled { border-color: var(--line-dark); }
+.site-header.scrolled::before { background: rgba(11,22,36,.82); -webkit-backdrop-filter: saturate(140%) blur(14px); backdrop-filter: saturate(140%) blur(14px); }
+.site-header.light.scrolled { border-color: var(--line); box-shadow: 0 10px 30px -20px rgba(11,22,36,.3); }
+.site-header.light.scrolled::before { background: rgba(255,255,255,.86); }
+body.menu-open .site-header::before { background: var(--carbon); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; height: 80px; }
 .brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }
 .brand-name { font: 700 18px/1 var(--font-head); letter-spacing: .08em; color: #fff; transition: color .3s; }
@@ -119,7 +126,7 @@ p { margin: 0 0 1em; }
 .nav-mobile { display: none; position: fixed; inset: 80px 0 0 0; background: var(--carbon); z-index: 59; padding: 24px 0; overflow-y: auto; }
 .nav-mobile.open { display: block; }
 .nav-mobile a { display: block; padding: 18px 0; font: 600 24px/1.2 var(--font-head); color: #fff; text-decoration: none; border-bottom: 1px solid var(--line-dark); }
-.nav-mobile a.btn { display: inline-flex; margin-top: 24px; border: none; font: 600 16px/1 var(--font-body); }
+.nav-mobile a.btn { display: flex; width: 100%; justify-content: center; margin-top: 28px; padding: 18px 24px; border: none; border-radius: 999px; font: 600 17px/1 var(--font-body); }
 @media (min-width: 1000px) { .nav-desktop { display: flex; } .nav-toggle { display: none; } }
 
 /* ---------- Sections ---------- */
