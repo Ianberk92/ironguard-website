@@ -70,7 +70,7 @@
      real handler before launch. */
   var form = document.querySelector('#plan-form');
   if (form) {
-    var INBOX = form.getAttribute('data-inbox') || 'sales@ironguardit.com';
+    var INBOX = form.getAttribute('data-inbox') || 'contact@ironguardit.com';
 
     function fieldWrap(input) { return input.closest('.form-field'); }
 
