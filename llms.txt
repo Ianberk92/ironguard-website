@@ -1,0 +1,37 @@
+# Ironguard IT
+
+> Managed IT, cybersecurity and infrastructure for growing, multi-site companies
+> (50-500 employees). Based in Carlsbad, California, serving San Diego County and
+> multi-site teams across the United States. Tagline: "IT that takes ownership."
+
+Pricing is public: managed IT starts at $150 per user per month, with engagements priced
+between $150 and $200 per user depending on security requirements, sites and onsite needs.
+The service covers employee support, a security baseline (identity, MFA, endpoints, email,
+backup), Microsoft 365 or Google Workspace administration, device lifecycle, vendor
+management and executive reporting. Dedicated onsite coverage, hardware, travel and major
+projects are scoped separately, in writing. Managed plans start at 25 users.
+
+Ironguard is a team-based provider: leadership, IT operations and support, with vetted
+specialists for projects. Platforms supported include Microsoft 365, Google Workspace, AWS,
+Dell, Lenovo, Cisco and Meraki. A monthly license and spend review is included in managed
+service. AI governance is a core offering.
+
+## Key pages
+- [Managed IT (services + pricing + FAQ)](/managed-it.html)
+- [Services overview](/services.html)
+- [Cybersecurity](/cybersecurity.html)
+- [Microsoft 365 & Google Workspace](/microsoft-365.html)
+- [Networks & Infrastructure](/networks-infrastructure.html)
+- [Automation & AI Governance](/automation-ai.html)
+- [Why Ironguard (fit and process)](/why-ironguard.html)
+- [What managed IT actually costs](/insights/what-managed-it-costs.html)
+- [FAQ: pricing, contracts, security, switching](/faq.html)
+- [How to evaluate or replace an MSP](/msp-evaluation-guide.html)
+- [Insurance Readiness Review](/cyber-insurance-readiness.html)
+- [Co-managed IT](/co-managed-it.html)
+- [Case studies](/case-studies.html)
+- [Insights (executive IT guidance)](/insights.html)
+- [IT Ownership Scorecard](/scorecard.html)
+- [Contact](/contact.html)
+
+Contact: sales@ironguardit.com (new inquiries), support@ironguardit.com or https://halopsa.ironguardit.com/portal (existing clients).
