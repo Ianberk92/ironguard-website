@@ -77,7 +77,9 @@ Honest statement: nothing runs after this session ends unless a scheduled task i
 `checkpoints/` and `sources/`. Before any commit run `git status --porcelain rainmaker/` and confirm no file
 naming a real candidate is staged. Preferred fix: move `rainmaker/` to a private repository.
 
-## 7. Backup
+## 7. Backup and the private repository
 
-The whole working state is `data/rainmaker.db` plus `data/raw/`. Zip and store those two in a private
-location after each session; everything else is regenerable with `scripts/run_pipeline.sh`.
+The private repository `Ianberk92/operation-rainmaker` is the canonical, versioned home of the whole system
+including data. After each research round: `scripts/sync_to_private.sh /path/to/operation-rainmaker "Round N"`.
+The whole working state is `data/rainmaker.db` plus `data/raw/`; everything else is regenerable with
+`scripts/run_pipeline.sh`, `scripts/reports.py` and `scripts/economics.py`.

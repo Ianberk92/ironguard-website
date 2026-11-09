@@ -4,11 +4,11 @@ Confidential recruiting-intelligence system built for the CEO of Ironguard IT (C
 verify, rank and recruit an exceptional new-business sales professional ("Rainmaker") or an
 entrepreneurial sales executive ("Builder").
 
-> **Confidentiality warning.** This directory lives inside the public `ironguard-website` repository,
-> which deploys the live website. Everything that names a real person (the database, raw research,
-> dossiers, outreach messages, reports, dashboard output) is excluded from git by `rainmaker/.gitignore`.
-> Only the tooling, configuration, templates and methodology are committed. Keep it that way, or move
-> this directory to a private repository. See OPERATIONS.md.
+> **Confidentiality.** The canonical home of this system, INCLUDING all research data, is the private
+> repository `Ianberk92/operation-rainmaker`. This copy inside the public `ironguard-website` repository
+> (which deploys the live website) carries tooling, configuration, templates and methodology only; everything
+> that names a real person is excluded by `rainmaker/.gitignore`. After each research round run
+> `scripts/sync_to_private.sh` to push the full working tree (with data) to the private repo. See OPERATIONS.md.
 
 ## What is delivered
 
