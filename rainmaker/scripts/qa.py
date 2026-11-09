@@ -96,7 +96,7 @@ def main() -> int:
 
     # 9. deliverables present
     for f in ("A_executive_summary.md", "B_target_company_intelligence.md", "D_ranked_top_15.md", "F_top3_recruitment_plan.md",
-              "G_compensation_economics_model.md", "06_rankings.md"):
+              "G_compensation_economics_model.md", "H2_revenue_confidence_plan.md", "F2_approach_and_offer_playbook.md", "06_rankings.md"):
         p = path("reports") / f
         add("PASS" if p.exists() else "WARN", f"report present: {f}")
 

@@ -21,6 +21,8 @@ entrepreneurial sales executive ("Builder").
 | E. Top 5 intelligence dossiers | `candidates/dossier_*.md` | no |
 | F. Top 3 recruitment plan | `reports/F_top3_recruitment_plan.md` | no |
 | G. Compensation and economics model | `reports/G_compensation_economics_model.md`, `scripts/economics.py` | yes (no personal data) |
+| F2. Approach, offer and conviction playbook | `reports/F2_approach_and_offer_playbook.md` | private repo only (names people) |
+| H2. Revenue confidence plan (12-month ramp model, gates, pre-hire pipeline) | `reports/H2_revenue_confidence_plan.md`, `scripts/ramp_plan.py` | script yes; report regenerable |
 | H. Candidate assessment toolkit | `assessment/` | yes |
 | I. Personalized outreach pack | `outreach/` | no (templates in `assessment/outreach_templates.md` are committed) |
 | J. Research dashboard | `dashboard/index.html` (generated) | no |
@@ -44,6 +46,7 @@ rainmaker/
     leads_from_companies.py turns sales-titled names noticed during company mapping into low-confidence leads
     round2_args.py          builds the budgeted args for the round-2 workflow (verify + by-company + discovery)
     economics.py            compensation scenarios and revenue-production math (deliverable G)
+    ramp_plan.py            12-month revenue-confidence model, go/no-go gates, pre-hire pipeline checklist (H2)
     weekly_discovery.py     recurring discovery plan + weekly intelligence report
     run_pipeline.sh         ingest -> score -> export -> dashboard -> qa
   data/raw/companies/*.json research output: company map
@@ -64,6 +67,7 @@ python3 scripts/db.py init
 ./scripts/run_pipeline.sh          # ingest -> score -> export -> dashboard -> qa
 python3 scripts/reports.py         # B, D and the top-5 dossiers
 python3 scripts/economics.py       # G
+python3 scripts/ramp_plan.py       # H2
 open dashboard/index.html          # or xdg-open / start
 python3 scripts/db.py stats
 ```
