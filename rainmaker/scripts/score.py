@@ -128,6 +128,8 @@ def rank(conn, scored: list[dict]) -> dict:
         pr = "P1" if c["rank_overall"] <= 5 else "P2" if c["rank_overall"] <= 15 else "P3" if c["rank_overall"] <= 30 else "P4"
         if c.get("triage_decision") == "hold" and pr in ("P1", "P2"):
             pr = "P3"  # a 'hold' decision caps outreach priority regardless of score
+        if c.get("research_status") == "triaged" and pr == "P1":
+            pr = "P2"  # desk-triaged only (not web-verified) records cannot be first-approach priority
         conn.execute("UPDATE candidates SET recruiting_priority=? WHERE id=?", (pr, c["id"]))
     return rankings
 
