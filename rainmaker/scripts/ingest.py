@@ -226,7 +226,8 @@ def ingest_verification(conn) -> int:
     vdir = path("verified")
     if not vdir.exists():
         return 0
-    for f in sorted(vdir.glob("*.json")):
+    # Process oldest files first so the most recent verification of a candidate wins.
+    for f in sorted(vdir.glob("*.json"), key=lambda p: p.stat().st_mtime):
         try:
             data = read_json(f)
         except json.JSONDecodeError as e:
