@@ -45,3 +45,24 @@
   verification before they can drive an offer.
 - Three duplicates in round 1 came from the same person being recorded with different employer wording; ingest now
   merges same-name records when either employer is unknown or the names overlap, and flags true same-name conflicts.
+
+## After round 3 (2026-11-09, later)
+
+Three rounds and roughly 560 searches establish a structural limit of web-only research for this brief: the search
+engine does not surface LinkedIn profile snippets for sellers at sub-200-employee MSPs, and company-first or
+award-pattern queries return job boards and data-broker directories instead of people. What did work: employer
+press releases (titles and dates), employer-published team and bio pages, trade-press people moves, and
+name-first confirmation queries once a name is known. What did not: discovering individual account executives at
+small MSPs by employer or award term.
+
+Implications for the search:
+1. The verified approach list (one direct hunter, one MSP-native sales leader, one local enterprise-software
+   producer) is what public web research can produce; it is not the ceiling of the market.
+2. The highest-value next step is a people-data source (LinkedIn Recruiter Lite or Sales Navigator used manually by
+   the CEO, or Apollo.io) to enumerate account executives at the ten most relevant employers, followed by name-first
+   web confirmation (3 searches each) through this system. Cost and benefit are in research/03_optional_integrations.md.
+3. Alumni of the relevant employers (former account executives now elsewhere) are a better pool than current staff
+   for a public-web approach, because job changes generate press and profile updates.
+4. Comp benchmarks observed in postings this round (useful for the offer): Managed Solution hunter AE base $65K–$95K;
+   IT Solutions Consulting San Diego field AE base $70K–$100K; Agile IT CMMC/Microsoft AE $135K–$150K; Proficio senior
+   regional sales manager $100K–$135K. The adopted $115K base sits above the MSP median and below cyber/enterprise.

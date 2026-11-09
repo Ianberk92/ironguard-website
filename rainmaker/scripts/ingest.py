@@ -208,8 +208,8 @@ def ingest_candidates(conn, run_id: str) -> tuple[int, int]:
             modality = data.get("modality", f.stem)
             for c in data.get("candidates", []):
                 name = (c.get("full_name") or "").strip()
-                if not name or "unknown" in name.lower() or len(name.split()) < 2:
-                    continue  # unnamed or placeholder records are not candidates
+                if not name or "unknown" in name.lower() or len(name.split()) < 2 or "(" in name or len(name) > 40:
+                    continue  # unnamed, placeholder or annotated records are not candidates
                 _, was_created = merge_candidate(conn, c, modality)
                 created += was_created
                 merged += (not was_created)
