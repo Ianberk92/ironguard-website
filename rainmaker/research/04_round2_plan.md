@@ -50,3 +50,18 @@ Priorities for the next 180 searches:
    Microsoft/AWS partner sellers, builder scale stories.
 4. Manual checks the CEO can do in minutes (no budget): LinkedIn location and title for the four
    "investigate" candidates listed in the private repository's playbook (reports/F2, section 7).
+
+## Round 4 plan (after round 3)
+
+Round 3 confirmed the structural limit of web-only discovery (see research/02_methodology_lessons.md). Round 4 should be
+hybrid:
+1. CEO (or a researcher with LinkedIn Recruiter Lite / Sales Navigator / Apollo.io) lists account executives and
+   business-development managers at the ten most relevant employers (TPx direct sales, Managed Solution, Agile IT,
+   Proficio, DeepSeas, Infracore, EVOTEK, Synoptek, IT Solutions Consulting Carlsbad office, TechMD) and pastes names
+   and titles into data/raw/r4/manual_people.json (discovery schema, confidence low, source = profile URL).
+2. The system spends the search budget on name-first confirmation (3 searches per name) and on alumni of those
+   employers (press and profile updates make job-changers visible).
+3. Manual checks that unblock current leads: location of the TPx honoree; current title of the Managed Solution VP; title
+   of the Ivanti seller.
+4. Remaining modalities: conference/podcast speakers and vendor award lists had near-zero yield for direct sellers and
+   should not receive budget again.
