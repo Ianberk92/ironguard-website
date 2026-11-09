@@ -262,8 +262,10 @@ def ingest_verification(conn) -> int:
             # Only override short display fields when the verifier confirmed a clean value; caveated strings stay in the JSON blob.
             title_c = clean(v.get("current_title_confirmed")) if len(v.get("current_title_confirmed") or "") <= 80 else ""
             company_c = clean(v.get("current_company_confirmed")) if len(v.get("current_company_confirmed") or "") <= 60 else ""
-            loc_c = clean(v.get("location_confirmed")) if len(v.get("location_confirmed") or "") <= 80 else ""
-            tier_c = clean(v.get("geo_tier_confirmed"), allowed={"1", "2", "3"})
+            loc_raw = v.get("location_confirmed") or ""
+            loc_c = clean(loc_raw[:120].split(" - ")[0].split(". ")[0]) if loc_raw else ""
+            m = re.search(r"(?i)\btier\s*([123])\b|^\s*([123])\b", v.get("geo_tier_confirmed") or "")
+            tier_c = (m.group(1) or m.group(2)) if m and "unconfirmed" not in (v.get("geo_tier_confirmed") or "").lower()[:12] else ""
             conn.execute(
                 """UPDATE candidates SET verification=?, scores=?, evidence_confidence=?, recruitability=?, research_status=?,
                    last_verified=?, stale_flag=0, next_action=?, concerns=COALESCE(NULLIF(?, ''), concerns),
