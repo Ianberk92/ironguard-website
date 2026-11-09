@@ -1,5 +1,5 @@
 """Build the args object for the round-2 workflow (verification of 'investigate' candidates + by-company discovery)
-within a fixed search budget. Usage: python scripts/round2_args.py [--budget 180] > data/exports/round2_args.json
+within a fixed search budget. Usage: python scripts/round2_args.py [--budget 180] [--out data/exports/round2_args.json]
 """
 from __future__ import annotations
 
@@ -20,6 +20,7 @@ def main() -> None:
     ap.add_argument("--per-company", type=int, default=2)
     ap.add_argument("--max-candidates", type=int, default=16)
     ap.add_argument("--max-companies", type=int, default=30)
+    ap.add_argument("--out", default=str(path("exports") / "round2_args.json"))
     a = ap.parse_args()
     init_db()
     conn = connect()
@@ -36,7 +37,9 @@ def main() -> None:
     remaining = a.budget - spend_c - spend_co
     out = {"run_date": None, "budget_total": a.budget, "verify": cands, "companies": comps, "per_candidate": a.per_candidate, "per_company": a.per_company,
            "discovery_budget_remaining": max(0, remaining), "notes": f"verification {spend_c} + by-company {spend_co} + discovery {max(0, remaining)} = {a.budget}"}
-    print(json.dumps(out, indent=2))
+    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
+    Path(a.out).write_text(json.dumps(out, indent=2), encoding="utf-8")
+    print(f"wrote {a.out}: {out['notes']}")
 
 
 if __name__ == "__main__":
