@@ -96,12 +96,20 @@ def score_all(conn) -> list[dict]:
                     "current_company": r["current_company"], "geo_tier": r["geo_tier"], "archetype": r["archetype"],
                     "scores": scores, "score_total": total, "score_low": low, "score_high": high, "evidence_confidence": conf,
                     "recruitability": recruit, "producer_score": producer, "executive_score": executive, "overall_score": overall,
-                    "missing_dimensions": missing, "research_status": r["research_status"], "public_profile_url": r["public_profile_url"]})
+                    "missing_dimensions": missing, "research_status": r["research_status"], "public_profile_url": r["public_profile_url"],
+                    "triage_decision": (verification or {}).get("triage_decision")})
     return out
 
 
+EXCLUDED_STATUSES = {"rejected", "duplicate"}
+
+
 def rank(conn, scored: list[dict]) -> dict:
-    s = [c for c in scored if c["scored"]]
+    # Rejected or duplicate records keep their scores for the record but never appear in rankings.
+    s = [c for c in scored if c["scored"] and c.get("research_status") not in EXCLUDED_STATUSES and c.get("triage_decision") != "reject"]
+    for c in scored:
+        if c["scored"] and c not in s:
+            conn.execute("UPDATE candidates SET rank_producer=NULL, rank_executive=NULL, rank_overall=NULL, recruiting_priority='excluded' WHERE id=?", (c["id"],))
     rankings = {}
     for key, field in (("producer", "producer_score"), ("executive", "executive_score"), ("overall", "overall_score")):
         ordered = sorted(s, key=lambda c: (-c[field], -c["evidence_confidence"], c["full_name"]))
@@ -118,12 +126,14 @@ def rank(conn, scored: list[dict]) -> dict:
     # recruiting priority tiers derived from overall rank
     for c in s:
         pr = "P1" if c["rank_overall"] <= 5 else "P2" if c["rank_overall"] <= 15 else "P3" if c["rank_overall"] <= 30 else "P4"
+        if c.get("triage_decision") == "hold" and pr in ("P1", "P2"):
+            pr = "P3"  # a 'hold' decision caps outreach priority regardless of score
         conn.execute("UPDATE candidates SET recruiting_priority=? WHERE id=?", (pr, c["id"]))
     return rankings
 
 
 def sensitivity(scored: list[dict]) -> dict:
-    s = [c for c in scored if c["scored"]]
+    s = [c for c in scored if c["scored"] and c.get("research_status") not in EXCLUDED_STATUSES and c.get("triage_decision") != "reject"]
     scenarios = S["sensitivity_scenarios"]
     table = {}
     top5_count: dict[str, int] = {}

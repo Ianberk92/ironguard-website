@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -206,8 +207,9 @@ def ingest_candidates(conn, run_id: str) -> tuple[int, int]:
                 continue
             modality = data.get("modality", f.stem)
             for c in data.get("candidates", []):
-                if not c.get("full_name"):
-                    continue
+                name = (c.get("full_name") or "").strip()
+                if not name or "unknown" in name.lower() or len(name.split()) < 2:
+                    continue  # unnamed or placeholder records are not candidates
                 _, was_created = merge_candidate(conn, c, modality)
                 created += was_created
                 merged += (not was_created)
@@ -238,6 +240,7 @@ def ingest_verification(conn) -> int:
             name = item.get("candidate_name") or item.get("full_name")
             if not name:
                 continue
+            name = re.sub(r"\s*\(.*\)\s*$", "", name).strip()  # "Shannon Murray (Shannon Murray-Doffo)" -> "Shannon Murray"
             norm = normalize_name(name)
             row = conn.execute("SELECT id FROM candidates WHERE name_norm=? ORDER BY id LIMIT 1", (norm,)).fetchone()
             if not row:
