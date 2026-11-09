@@ -167,7 +167,8 @@ td{{padding:8px 8px;border-bottom:1px solid var(--grid);vertical-align:top}}tr:l
 
 <h2>Next actions</h2>
 <div class="card"><ul>
-<li>Review the Top 3 recruitment plan (reports/F_top3_recruitment_plan.md) and approve or decline outreach per candidate.</li>
+<li>Review the Top 3 recruitment plan (reports/F_top3_recruitment_plan.md) and the approach/offer playbook (reports/F2_approach_and_offer_playbook.md); approve or decline outreach per candidate.</li>
+<li>Start the pre-hire pipeline actions in the revenue confidence plan (reports/H2_revenue_confidence_plan.md, section 4) so the hire inherits warm opportunities.</li>
 <li>Confirm compensation guardrails from the economics model (reports/G_compensation_economics_model.md) before any conversation.</li>
 <li>Candidates listed under diligence need re-verification before outreach; see candidates/ dossiers for open questions.</li>
 <li>Run <code>scripts/run_pipeline.sh</code> after each research batch to refresh this dashboard.</li>

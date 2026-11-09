@@ -34,3 +34,19 @@ starves later agents again. Rounds 3+ repeat the same shape: re-verify the new i
    sdbj.com, msspalert.com, channele2e.com, inc.com, plus target-company websites. LinkedIn cannot be fetched
    regardless and should be used manually.
 3. Optional paid tools: see research/03_optional_integrations.md (LinkedIn Recruiter Lite is the highest-value, lowest-cost step).
+
+## Round 3 plan (after round 2 completes)
+
+Lessons from round 2 verification: employer-published pages (leadership pages, channel maps, code-of-conduct
+documents, press releases) surfaced through search snippets resolved titles for 9 of 15 candidates; aggregator-only
+names stayed unverifiable and should not receive further budget.
+
+Priorities for the next 180 searches:
+1. Direct sellers at the employers that proved relevant (2–3 searches each): TPx's direct San Diego sales team
+   (not channel), Managed Solution's "100% hunter" account executives, Agile IT's sales team, Proficio's direct
+   sellers, centrexIT business development, DeepSeas, Bird Rock Systems, Infracore, Xceptional.
+2. Verify new names from the round-2 company sweep (4 searches each for the top 10).
+3. Modalities still never run: UCaaS/telecom top producers, VAR/vendor sellers with President's Club in SD/OC,
+   Microsoft/AWS partner sellers, builder scale stories.
+4. Manual checks the CEO can do in minutes (no budget): LinkedIn location and title for the four
+   "investigate" candidates listed in the private repository's playbook (reports/F2, section 7).
