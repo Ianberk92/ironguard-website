@@ -1,0 +1,89 @@
+{
+  "project": "Operation Rainmaker",
+  "version": "1.0.0",
+  "company": {
+    "name": "Ironguard IT",
+    "hq": "Carlsbad, CA",
+    "website": "https://www.ironguardit.com",
+    "revenue_assumption_usd": "1.5M-2M (CEO-stated, unverified)",
+    "growth_ambition_usd": "+5M annual revenue in 12-24 months"
+  },
+  "paths": {
+    "db": "data/rainmaker.db",
+    "raw": "data/raw",
+    "verified": "data/raw/verify",
+    "exports": "data/exports",
+    "reports": "reports",
+    "candidates": "candidates",
+    "companies": "companies",
+    "dashboard": "dashboard/index.html",
+    "logs": "logs",
+    "checkpoints": "checkpoints"
+  },
+  "weights": {
+    "new_business_production": 0.25,
+    "msp_recurring_experience": 0.20,
+    "sales_ability": 0.15,
+    "entrepreneurial_fit": 0.15,
+    "build_sales_operation": 0.10,
+    "executive_potential": 0.10,
+    "geographic_compatibility": 0.05
+  },
+  "dimension_labels": {
+    "new_business_production": "Demonstrated new-business production",
+    "msp_recurring_experience": "MSP/MSSP and recurring revenue experience",
+    "sales_ability": "Evidence of exceptional sales ability",
+    "entrepreneurial_fit": "Entrepreneurial mentality and small-company fit",
+    "build_sales_operation": "Ability to build a sales operation",
+    "executive_potential": "Executive leadership potential",
+    "geographic_compatibility": "Geographic compatibility"
+  },
+  "missing_dimension_prior": 5.0,
+  "missing_dimension_bounds": [2.0, 8.0],
+  "sensitivity_scenarios": {
+    "baseline": {"new_business_production": 0.25, "msp_recurring_experience": 0.20, "sales_ability": 0.15, "entrepreneurial_fit": 0.15, "build_sales_operation": 0.10, "executive_potential": 0.10, "geographic_compatibility": 0.05},
+    "production_heavy": {"new_business_production": 0.40, "msp_recurring_experience": 0.15, "sales_ability": 0.20, "entrepreneurial_fit": 0.10, "build_sales_operation": 0.05, "executive_potential": 0.05, "geographic_compatibility": 0.05},
+    "builder_heavy": {"new_business_production": 0.15, "msp_recurring_experience": 0.15, "sales_ability": 0.10, "entrepreneurial_fit": 0.15, "build_sales_operation": 0.20, "executive_potential": 0.20, "geographic_compatibility": 0.05},
+    "local_heavy": {"new_business_production": 0.22, "msp_recurring_experience": 0.18, "sales_ability": 0.13, "entrepreneurial_fit": 0.12, "build_sales_operation": 0.08, "executive_potential": 0.07, "geographic_compatibility": 0.20},
+    "msp_purist": {"new_business_production": 0.25, "msp_recurring_experience": 0.35, "sales_ability": 0.15, "entrepreneurial_fit": 0.10, "build_sales_operation": 0.05, "executive_potential": 0.05, "geographic_compatibility": 0.05},
+    "equal_weights": {"new_business_production": 0.1429, "msp_recurring_experience": 0.1429, "sales_ability": 0.1429, "entrepreneurial_fit": 0.1429, "build_sales_operation": 0.1428, "executive_potential": 0.1428, "geographic_compatibility": 0.1428}
+  },
+  "rankings": {
+    "producer": {"new_business_production": 0.5, "sales_ability": 0.3, "msp_recurring_experience": 0.2, "evidence_weighting": 0.5},
+    "executive": {"build_sales_operation": 0.35, "executive_potential": 0.35, "entrepreneurial_fit": 0.30, "evidence_weighting": 0.3},
+    "overall": {"base_weight": 0.80, "recruitability_weight": 0.20}
+  },
+  "geography": {
+    "tier1": ["Carlsbad", "Encinitas", "Oceanside", "Vista", "San Marcos", "Escondido", "Del Mar", "Solana Beach", "Rancho Bernardo", "San Diego", "North County", "Sorrento Valley", "La Jolla", "Poway", "Chula Vista", "El Cajon", "Santee"],
+    "tier2": ["Orange County", "Irvine", "Newport Beach", "Costa Mesa", "Mission Viejo", "Temecula", "Murrieta", "Anaheim", "Santa Ana", "Lake Forest", "Huntington Beach", "Laguna", "Long Beach", "Torrance", "El Segundo", "Riverside", "Corona", "Ontario", "Los Angeles", "Southern California"],
+    "tier_scores": {"1": 10, "2": 7, "3": 4, "unknown": 5}
+  },
+  "freshness_days": 90,
+  "funnel_targets": {"universe": 100, "investigate": 30, "strong": 15, "deep_dive": 5, "approach": 3},
+  "search": {
+    "year_terms": ["2024", "2025", "2026"],
+    "modalities": [
+      "awards_vendor_channel", "awards_presidents_club", "conferences_national", "conferences_socal",
+      "press_socal_hires", "press_national_hires", "podcasts_msp_sales", "interviews_case_studies",
+      "geo_san_diego", "geo_orange_county", "geo_presidents_club_socal", "entrepreneurs_exits_socal",
+      "builders_scaled_msps", "mssp_cyber_sellers", "var_vendor_sellers", "ucaas_b2b_top_producers",
+      "cloud_partner_sellers", "by_company"
+    ],
+    "weekly_query_templates": [
+      "\"{company}\" \"vice president of sales\" OR \"director of sales\" OR \"account executive\" {year}",
+      "\"{company}\" \"president's club\" OR \"sales rep of the year\" OR \"top producer\"",
+      "\"{candidate}\" \"{company}\"",
+      "\"{candidate}\" linkedin",
+      "\"managed services\" \"president's club\" \"San Diego\" {year}",
+      "\"MSP\" \"sales rep of the year\" {year}",
+      "\"appointed\" \"vice president of sales\" \"managed services\" California {year}",
+      "\"chief revenue officer\" \"managed services provider\" {year}",
+      "\"acquires\" \"San Diego\" managed services provider {year}",
+      "\"acquires\" \"Orange County\" managed IT {year}"
+    ]
+  },
+  "privacy": {
+    "collect": ["name", "professional title", "employer", "public professional profile URL", "public professional statements", "public awards"],
+    "never_collect": ["personal email", "phone", "home address", "age", "photo", "protected characteristics", "health", "family"]
+  }
+}
