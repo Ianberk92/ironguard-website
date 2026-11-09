@@ -26,6 +26,8 @@ def main(round_dir: str = "r1") -> None:
                 title = p.get("title") or ""
                 if not p.get("name") or not SALES.search(title) or (EXCLUDE.search(title) and not re.search(r"sales|revenue", title, re.I)):
                     continue
+                if not str(p.get("source_url", "")).startswith("http"):
+                    continue  # every lead must carry a real source URL
                 out.append({
                     "full_name": p["name"], "current_title": title, "current_company": c["name"], "previous_employers": [],
                     "location_public": "unknown", "location_source_url": "", "years_experience_estimate": "unknown",

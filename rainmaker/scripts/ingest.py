@@ -140,7 +140,7 @@ def merge_candidate(conn, c: dict, modality: str) -> tuple[int, bool]:
             old = row[field] or ""
             new = new or ""
             return new if len(new) > len(old) else old
-        if comp and "unknown" not in comp.lower() and (not row["current_company"] or "unknown" in (row["current_company"] or "").lower()):
+        if comp and "unknown" not in comp.lower() and (row["current_company"] or "").strip().lower() in ("", "unknown"):
             conn.execute("UPDATE candidates SET current_company=?, company_norm=? WHERE id=?", (comp, comp_norm, row["id"]))
         conn.execute(
             """UPDATE candidates SET current_title=?, previous_employers=?, location_public=?, location_source_url=?, geo_tier=?,
@@ -232,7 +232,7 @@ def ingest_verification(conn) -> int:
         except json.JSONDecodeError as e:
             log.warning("skipping unreadable %s: %s", f, e)
             continue
-        items = data if isinstance(data, list) else [data]
+        items = data["records"] if isinstance(data, dict) and "records" in data else (data if isinstance(data, list) else [data])
         for item in items:
             name = item.get("candidate_name") or item.get("full_name")
             if not name:
@@ -247,6 +247,19 @@ def ingest_verification(conn) -> int:
                 cid = row["id"]
             v = item.get("verification", item)
             scores = v.get("dimension_scores") or {}
+            def clean(val, allowed=None):
+                val = (val or "").strip()
+                low = val.lower()
+                if not val or low.startswith(("unknown", "not stated", "unconfirmed", "not confirmed", "n/a")):
+                    return ""
+                if allowed is not None and val not in allowed:
+                    return ""
+                return val
+            # Only override short display fields when the verifier confirmed a clean value; caveated strings stay in the JSON blob.
+            title_c = clean(v.get("current_title_confirmed")) if len(v.get("current_title_confirmed") or "") <= 80 else ""
+            company_c = clean(v.get("current_company_confirmed")) if len(v.get("current_company_confirmed") or "") <= 60 else ""
+            loc_c = clean(v.get("location_confirmed")) if len(v.get("location_confirmed") or "") <= 80 else ""
+            tier_c = clean(v.get("geo_tier_confirmed"), allowed={"1", "2", "3"})
             conn.execute(
                 """UPDATE candidates SET verification=?, scores=?, evidence_confidence=?, recruitability=?, research_status=?,
                    last_verified=?, stale_flag=0, next_action=?, concerns=COALESCE(NULLIF(?, ''), concerns),
@@ -256,8 +269,8 @@ def ingest_verification(conn) -> int:
                    WHERE id=?""",
                 (json.dumps(v, ensure_ascii=False), json.dumps(scores), v.get("evidence_confidence"), v.get("recruitability"),
                  v.get("research_status", "verified"), now_iso(), v.get("recommended_next_action"),
-                 v.get("concerns_summary", ""), v.get("current_title_confirmed", ""), v.get("current_company_confirmed", ""),
-                 v.get("location_confirmed", ""), v.get("geo_tier_confirmed", ""), v.get("archetype_confirmed", ""),
+                 v.get("concerns_summary", ""), title_c, company_c,
+                 loc_c, tier_c, v.get("archetype_confirmed", ""),
                  v.get("public_profile_url", ""), cid),
             )
             for ev in v.get("evidence", []) or []:

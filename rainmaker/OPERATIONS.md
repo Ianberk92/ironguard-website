@@ -10,7 +10,8 @@
    (SQL below) and pick the next batch to verify.
 4. **Verify**: for each candidate chosen, produce a verification record in `data/raw/verify/` (schema in
    README). The verification prompt in `research/prompts/verify_candidate.md` is the standard brief.
-5. **Score and publish**: `./scripts/run_pipeline.sh` (ingest → score → export → dashboard → qa).
+5. **Score and publish**: `./scripts/run_pipeline.sh` (ingest → score → export → dashboard → qa), then
+   `python3 scripts/reports.py` to regenerate B, D and the dossiers.
 6. **Decide**: review `reports/06_rankings.md` and the dashboard; update `recruiting_priority`,
    `outreach_approval_status`, `contact_status`, `interview_status` as decisions are made.
 
@@ -37,6 +38,12 @@ Every status change you want tracked can be logged with
   and retire the dead ends (research/02_methodology_lessons.md keeps the running notes).
 - The ingest step merges repeated discoveries of the same person instead of creating new work; a candidate is
   re-researched only when a verification run is explicitly requested.
+
+## 3b. Research rounds and the search budget
+
+The cloud environment allows 200 web searches per turn, shared by all agents, and blocks direct page fetches.
+Plan every round with `python3 scripts/round2_args.py --budget 180` and the workflow in
+`research/workflows/05_round2_verify_discover.js`; see `research/04_round2_plan.md`.
 
 ## 4. Recurring discovery (what exists vs. what is configured)
 

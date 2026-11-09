@@ -82,7 +82,10 @@ def score_all(conn) -> list[dict]:
         exec_raw = weighted(scores, {k: v for k, v in ex.items() if k != "evidence_weighting"}, PRIOR)
         executive = round(exec_raw * ((1 - ex["evidence_weighting"]) + ex["evidence_weighting"] * conf), 2)
         ov = S["rankings"]["overall"]
-        overall = round(ov["base_weight"] * total + ov["recruitability_weight"] * recruit * 10, 2)
+        # Overall = fit model + recruitability, discounted by evidence confidence so that thinly-evidenced records
+        # (whose missing dimensions sit at the neutral prior) cannot outrank well-evidenced ones.
+        ew = ov.get("evidence_weighting", 0.0)
+        overall = round((ov["base_weight"] * total + ov["recruitability_weight"] * recruit * 10) * ((1 - ew) + ew * conf), 2)
         missing = [d for d in DIMS if scores.get(d) is None]
         conn.execute(
             """UPDATE candidates SET scores=?, score_total=?, score_low=?, score_high=?, evidence_confidence=?, recruitability=?,
@@ -156,7 +159,8 @@ def write_report(rankings: dict, sens: dict, scored: list[dict]) -> None:
     unscored = [c["full_name"] for c in scored if not c["scored"]]
     lines = [f"# Candidate Rankings (generated {now_iso()})", "",
              "Scores are 0-100. Range = score if every missing dimension were scored at the low bound (2/10) vs the high bound (8/10). "
-             "Evidence confidence 0-1 = share of weighted dimensions with evidence, blended with verifier source quality.", ""]
+             "Evidence confidence 0-1 = share of weighted dimensions with evidence, blended with verifier source quality. "
+             "Producer and executive scores are multiplied by (1 - w) + w x confidence; overall = (0.8 x weighted model + 0.2 x recruitability) x (0.5 + 0.5 x confidence).", ""]
     for key, title in (("producer", "1. Best demonstrated revenue producers"),
                        ("executive", "2. Best potential future sales executives"),
                        ("overall", "3. Best overall candidates for Ironguard IT (fit, economics, recruitability)")):

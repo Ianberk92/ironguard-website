@@ -149,6 +149,8 @@ def main() -> None:
     conn = connect()
     company_report(conn)
     rows = top15(conn)
+    for old in path("candidates").glob("dossier_*.md"):
+        old.unlink()  # dossiers are regenerated from the database each run
     paths = []
     for i, r in enumerate(rows[: a.dossiers], 1):
         paths.append(dossier(conn, r, i))

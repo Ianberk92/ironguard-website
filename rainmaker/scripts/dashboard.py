@@ -79,7 +79,7 @@ def main() -> None:
     funnel = [("Universe discovered", st["candidates"]), ("Verified", verified), ("Strong prospects (P1-P2)", strong), ("Deep-dive dossiers", deep), ("Approach first (P1)", len(outreach))]
     fmax = max([v for _, v in funnel] + [1])
     funnel_html = "".join(
-        f'<div class="frow"><span class="flabel">{esc(l)}</span><span class="fbar"><span class="ffill" style="width:{max(2, round(v / fmax * 100))}%; background: var(--ord-{i+1})"></span></span><span class="num">{v}</span></div>'
+        f'<div class="frow"><span class="flabel">{esc(l)}</span><span class="fbar"><span class="ffill" style="width:{0 if not v else max(2, round(v / fmax * 100))}%; background: var(--ord-{i+1})"></span></span><span class="num">{v}</span></div>'
         for i, (l, v) in enumerate(funnel))
 
     base_cols = [

@@ -40,6 +40,9 @@ rainmaker/
     export.py               CSV + XLSX exports
     dashboard.py            static HTML executive dashboard
     qa.py                   quality gates (duplicates, sources, placeholders, score consistency, exports)
+    reports.py              company intelligence (B), ranked top 15 (D), top-N dossiers (E) from the database
+    leads_from_companies.py turns sales-titled names noticed during company mapping into low-confidence leads
+    round2_args.py          builds the budgeted args for the round-2 workflow (verify + by-company + discovery)
     economics.py            compensation scenarios and revenue-production math (deliverable G)
     weekly_discovery.py     recurring discovery plan + weekly intelligence report
     run_pipeline.sh         ingest -> score -> export -> dashboard -> qa
@@ -59,6 +62,8 @@ schemas below. The Python pipeline is deterministic and re-runnable; nothing is 
 cd rainmaker
 python3 scripts/db.py init
 ./scripts/run_pipeline.sh          # ingest -> score -> export -> dashboard -> qa
+python3 scripts/reports.py         # B, D and the top-5 dossiers
+python3 scripts/economics.py       # G
 open dashboard/index.html          # or xdg-open / start
 python3 scripts/db.py stats
 ```
