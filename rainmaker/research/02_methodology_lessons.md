@@ -66,3 +66,18 @@ Implications for the search:
 4. Comp benchmarks observed in postings this round (useful for the offer): Managed Solution hunter AE base $65K–$95K;
    IT Solutions Consulting San Diego field AE base $70K–$100K; Agile IT CMMC/Microsoft AE $135K–$150K; Proficio senior
    regional sales manager $100K–$135K. The adopted $115K base sits above the MSP median and below cyber/enterprise.
+
+## After round 4 (2026-11-10)
+
+- Team-page enumeration worked only where the employer's own team page is indexed (one of sixteen small MSPs); re-querying
+  the same team URL with different phrasing exposed additional names, so a second pass on an indexed team page is worth one
+  query. Sub-25-person San Diego MSPs are owner-led or engineer-sold; stop spending budget on them.
+- The alumni sweep and the 2025–26 job-change sweep produced the most useful new names per search (verified appointments
+  with press sources), but they skew to VP/SVP-level sales leaders rather than individual hunters.
+- Award-vocabulary queries ("President's Club", "Rookie of the Year") remain dominated by job boards; use them only
+  name-first.
+- A container restart interrupted a workflow mid-run; resuming with the saved run id replayed the finished agents from the
+  journal and only re-ran the unfinished ones, so no search budget was lost. Keep run ids in the log.
+- Decision for round 5: stop broad web discovery. Spend budget only on (a) name-first confirmation of names the CEO
+  supplies from a manual LinkedIn pass, (b) the two or three strongest unconfirmed leads per round, and (c) re-validation
+  of the approach list before any contact.

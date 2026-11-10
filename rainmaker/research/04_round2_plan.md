@@ -65,3 +65,10 @@ hybrid:
    of the Ivanti seller.
 4. Remaining modalities: conference/podcast speakers and vendor award lists had near-zero yield for direct sellers and
    should not receive budget again.
+
+## Round 5 plan (after round 4)
+
+Broad web discovery is exhausted for this market (four rounds, about 740 searches). Round 5 runs only when the CEO
+supplies names: paste names and titles into `data/raw/r5/manual_people.json` (discovery schema; source = the profile URL),
+then run the verify stage of `research/workflows/07_round4_verify_discover.js` with those names as the `verify` list and an
+empty `companies` list. Also re-validate the approach list (title, employer, location) within 30 days of any outreach.
