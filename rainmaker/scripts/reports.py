@@ -151,8 +151,12 @@ def main() -> None:
     rows = top15(conn)
     for old in path("candidates").glob("dossier_*.md"):
         old.unlink()  # dossiers are regenerated from the database each run
+    # Dossiers go to the approach list first (P1, then P2), then down the overall ranking.
+    prio = {"P1": 0, "P2": 1, "P3": 2, "P4": 3}
+    ordered = sorted(conn.execute("SELECT * FROM candidates WHERE rank_overall IS NOT NULL").fetchall(),
+                     key=lambda r: (prio.get(r["recruiting_priority"], 9), r["rank_overall"]))
     paths = []
-    for i, r in enumerate(rows[: a.dossiers], 1):
+    for i, r in enumerate(ordered[: a.dossiers], 1):
         paths.append(dossier(conn, r, i))
     idx = ["# E. Top 5 Intelligence Dossiers — index", "", f"Generated {now_iso()}", ""] + [f"- [{p.name}]({'../candidates/' + p.name})" for p in paths]
     (path("reports") / "E_top5_dossiers_index.md").write_text("\n".join(idx), encoding="utf-8")

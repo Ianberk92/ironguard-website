@@ -8,5 +8,7 @@ PY="${PYTHON:-python3}"
 "$PY" "$HERE/score.py"
 "$PY" "$HERE/export.py"
 "$PY" "$HERE/dashboard.py"
+"$PY" "$HERE/reports.py"
+"$PY" "$HERE/site.py"
 "$PY" "$HERE/qa.py" || { echo "QA reported blocking issues (see reports/qa_report.md)"; exit 1; }
 echo "pipeline complete"
