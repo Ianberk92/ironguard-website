@@ -207,9 +207,12 @@ def ingest_candidates(conn, run_id: str) -> tuple[int, int]:
                 continue
             modality = data.get("modality", f.stem)
             for c in data.get("candidates", []):
-                name = (c.get("full_name") or "").strip()
-                if not name or "unknown" in name.lower() or len(name.split()) < 2 or "(" in name or len(name) > 40:
-                    continue  # unnamed, placeholder or annotated records are not candidates
+                name = re.sub(r"\s*\([^)]*\)", "", (c.get("full_name") or "")).strip()  # drop "(Matt)" style nicknames/annotations
+                c["full_name"] = name
+                tokens = name.split()
+                if (not name or any(w in name.lower() for w in ("unknown", "surname", "not public")) or len(tokens) < 2 or len(name) > 40
+                        or re.fullmatch(r"[A-Za-z]\.?", tokens[-1])):
+                    continue  # unnamed, placeholder, annotated or initial-only records are not candidates
                 _, was_created = merge_candidate(conn, c, modality)
                 created += was_created
                 merged += (not was_created)
