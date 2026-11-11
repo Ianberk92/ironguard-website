@@ -113,7 +113,7 @@ def main() -> None:
     L += ["", "### Base case, month by month", "", "| Month | First meetings | Qualified opps created | Reviews sold | Signatures | Cum. signatures | Qualified pipeline ($) | Active ARR ($) | MRR ($) |", "|---|---|---|---|---|---|---|---|---|"]
     for r in sims["base"]["months"]:
         L.append(f"| {r['month']} | {r['first_meetings']} | {r['qualified_opps_created']} | {r['reviews_sold']} | {r['signatures']} | {r['cumulative_signatures']} | {r['qualified_pipeline_value']:,} | {r['active_arr']:,} | {r['mrr']:,} |")
-    L += ["", "Reading: with a working target list and the Insurance Readiness Review as the land offer, the first fixed-fee revenue arrives in month 1-2, the first managed agreement is realistic in month 4, and 2-3 agreements (roughly $300K-$450K ARR) by month 6 in the base case, consistent with the $0.75M-$1.2M year-one range in the economics model. The Review fees are small money but they are the earliest objective proof that the seller can open doors.", "",
+    L += ["", "Reading: with a working target list and the Insurance Readiness Review as the land offer, the first fixed-fee revenue arrives in month 1-2, the first managed agreement is realistic in month 4, and 2-3 agreements (roughly $300K-$450K ARR) by month 6 in the base case, consistent with the $500K-$750K year-one target adopted on the accounting actuals (the economics model's $0.75M-$1.2M range is the upside case). The Review fees are small money but they are the earliest objective proof that the seller can open doors.", "",
           "## 3. Go / no-go gates (leading indicators you can check, not promises)", "", "| Day | Gate | If missed |", "|---|---|---|"]
     for g in GATES:
         L.append(f"| {g['day']} | {g['gate']} | {g['if_missed']} |")

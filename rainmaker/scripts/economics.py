@@ -12,7 +12,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from common import checkpoint, get_logger, now_iso, path, write_json  # noqa: E402
+from common import ROOT, checkpoint, get_logger, now_iso, path, write_json  # noqa: E402
 
 log = get_logger("economics")
 
@@ -68,6 +68,50 @@ SCENARIOS = {
 }
 
 TARGETS = [500000, 1000000, 2000000]
+
+
+def load_actuals() -> dict | None:
+    """Return the newest data/finance/actuals_*.json (pulled from the accounting system) or None.
+
+    The file is private data (ignored by the public repository); this source never carries figures.
+    """
+    fin = ROOT / "data" / "finance"
+    files = sorted(fin.glob("actuals_*.json")) if fin.exists() else []
+    if not files:
+        return None
+    return json.loads(files[-1].read_text(encoding="utf-8"))
+
+
+def actuals_section(act: dict, scen: dict) -> list[str]:
+    """Render the actuals and the affordability test; all derived numbers are labelled as arithmetic."""
+    inc = act["income_lines"]; cogs = act["cogs_lines"]
+    gp = act["gross_profit"]; opex = act["total_operating_expenses"]; op_inc = gp - opex
+    ms_gp = inc["managed_services"] - cogs["managed_services"]
+    top = max(act["sales_by_customer"].items(), key=lambda kv: kv[1])
+    # group entities that share the first word of the top customer's name (e.g. parent + foreign subsidiary)
+    stem = top[0].split()[0].lower()
+    top_group = sum(v for k, v in act["sales_by_customer"].items() if k.lower().startswith(stem))
+    conc = top_group / act["total_sales"]
+    L = ["## 7. Actuals from the accounting system and the affordability test", "",
+         f"Source: {act['source']}. Figures in the first table are as reported; the second table is arithmetic on them. Confidential.", "",
+         "| As reported (trailing twelve months) | Amount |", "|---|---|",
+         f"| Total income | ${act['total_income']:,.0f} |", f"| Managed-services income | ${inc['managed_services']:,.0f} |",
+         f"| Resale income (cloud, hardware, software) | ${inc['cloud_resale_total'] + inc['hardware'] + inc['software_resale']:,.0f} |",
+         f"| Gross profit | ${gp:,.0f} ({act['gross_margin_pct']}%) |", f"| Operating expenses | ${opex:,.0f} |",
+         f"| Customers with sales | {act['customer_count']} |", "",
+         "| Derived | Value |", "|---|---|",
+         f"| Managed-services gross profit | ${ms_gp:,.0f} ({ms_gp / inc['managed_services'] * 100:.0f}%) |",
+         f"| Operating income (gross profit less operating expenses) | ${op_inc:,.0f} |",
+         f"| Share of sales from the largest client relationship | {conc * 100:.0f}% |",
+         f"| Recurring managed-services run-rate | ${inc['managed_services'] / 12:,.0f} MRR |", "",
+         "Affordability of each scenario before any new client bills (base + draw + $10K tools), against operating income:", "",
+         "| Scenario | Fixed year-one cost | Share of operating income | Signed ARR to break even at 45% margin |", "|---|---|---|---|"]
+    gm = ASSUMPTIONS["managed_gross_margin"]["value"]
+    for key, sc in SCENARIOS.items():
+        fixed = sc["base"] + sc["ramp_draw_monthly"] * sc["ramp_draw_months"] + 10000
+        L.append(f"| {sc['label']} | ${fixed:,} | {fixed / op_inc * 100:.0f}% | ${fixed / gm:,.0f} |")
+    L += ["", "Consequences adopted in `reports/00_decisions_and_defaults.md`: the default offer is Scenario 1; Scenario 2 is earned by reference-verified originated ARR; Scenario 3 waits for a second anchor client; the hire's year-one target is $500K-$750K of new contracted ARR; the 45% managed-services margin stays as the forward assumption for new clients because paid engineers replace founder time; resale carries no commission; concentration is disclosed, not hidden.", ""]
+    return L
 
 
 def blended_arr_per_client() -> float:
@@ -248,7 +292,12 @@ def main() -> None:
         L.append(f"| {p['phase']} | {p['hire']} | {p['target']} | {p['delivery']} |")
     L += ["", "Delivery capacity is the binding constraint: at $165/user, $5M of ARR is roughly 2,500 managed users. Confirm the engineer-per-user ratio and hiring lead times before promising growth to a candidate.", "",
           "## 6. Unverified assumptions to confirm with the CEO", "",
-          "1. Actual gross margin on managed services and on projects. 2. Current MRR, client count and churn. 3. Realistic onboarding capacity per month. 4. Inbound lead volume today (Scorecard, guide, site). 5. Whether the Insurance Readiness Review converts to managed agreements and at what rate. 6. Appetite for phantom equity / LTIP. 7. Approved compensation budget ceiling.", ""]
+          "1. Actual gross margin on managed services and on projects (now in section 7 when actuals are loaded). 2. Current MRR, client count and churn (section 7). 3. Realistic onboarding capacity per month. 4. Inbound lead volume today (Scorecard, guide, site). 5. Whether the Insurance Readiness Review converts to managed agreements and at what rate. 6. Appetite for phantom equity / LTIP. 7. Approved compensation budget ceiling.", ""]
+    act = load_actuals()
+    if act:
+        L += actuals_section(act, scen)
+        out["actuals"] = act
+        write_json(path("exports") / "economics.json", out)
     rp = path("reports") / "G_compensation_economics_model.md"
     rp.parent.mkdir(parents=True, exist_ok=True)
     rp.write_text("\n".join(L), encoding="utf-8")

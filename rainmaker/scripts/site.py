@@ -89,6 +89,7 @@ NAV = [
     ("Executive summary", "pages/A_executive_summary.html"),
     ("Decisions", "pages/00_decisions_and_defaults.html"),
     ("Sales plan", "pages/02_head_of_sales_plan.html"),
+    ("Financials", "pages/03_financial_reality.html"),
     ("Targets", "pages/P_target_accounts.html"),
     ("Top-3 plan", "pages/F_top3_recruitment_plan.html"),
     ("Playbook", "pages/F2_approach_and_offer_playbook.html"),
