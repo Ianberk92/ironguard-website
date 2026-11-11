@@ -9,6 +9,7 @@ PY="${PYTHON:-python3}"
 "$PY" "$HERE/export.py"
 "$PY" "$HERE/dashboard.py"
 "$PY" "$HERE/reports.py"
+"$PY" "$HERE/prospects.py"
 "$PY" "$HERE/site.py"
 "$PY" "$HERE/bundle.py"
 "$PY" "$HERE/qa.py" || { echo "QA reported blocking issues (see reports/qa_report.md)"; exit 1; }
