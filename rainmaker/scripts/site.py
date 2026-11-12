@@ -85,6 +85,7 @@ except ImportError:  # minimal fallback: headings, lists, tables, paragraphs, bo
 
 # Navigation: (label, published page or section)
 NAV = [
+    ("Start here", "pages/00_START_HERE.html"),
     ("Dashboard", "index.html"),
     ("Executive summary", "pages/A_executive_summary.html"),
     ("Decisions", "pages/00_decisions_and_defaults.html"),
