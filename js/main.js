@@ -144,7 +144,7 @@
 
       function trackLead(method) {
         /* GA4 form_submit + Google Ads "Submit lead form" conversion.
-           The send_to label must match ADS_LEAD_LABEL in analytics.js.
+           This is the ONLY place the Ads lead conversion is sent.
            Never called on the spam path — only real submissions count. */
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'form_submit', { form_destination: method, page: location.pathname });

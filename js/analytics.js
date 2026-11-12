@@ -13,7 +13,8 @@
      every page; registering the Ads account here lets the same loader deliver
      Ads conversions without touching each page. */
   var ADS_ID = 'AW-18483507018';
-  var ADS_LEAD_LABEL = ADS_ID + '/HXECCJbj-4odEMrez-1E'; // "Submit lead form" action
+  /* The "Submit lead form" conversion (label HXECCJbj-4odEMrez-1E) is sent from
+     main.js only, after the contact form is accepted. */
   if (typeof window.gtag === 'function') {
     window.gtag('config', ADS_ID);
   }
@@ -34,17 +35,10 @@
     if (!a) return;
     var href = a.getAttribute('href') || '';
     if (href.indexOf('outlook.office.com/book') !== -1 || href.indexOf('bookings.cloud.microsoft') !== -1) {
-      /* The booking scheduler is the primary conversion — tracked separately
-         so GA4 can treat it as the key event, and reported to Google Ads as
-         the "Submit lead form" conversion action. */
+      /* A click on a booking link is intent, not a lead: it goes to GA4 only.
+         It must never be sent to Google Ads as a conversion — the scheduler
+         is on another domain, so a click says nothing about a booking. */
       track('booking_click', { label: a.textContent.trim() });
-      if (typeof window.gtag === 'function') {
-        window.gtag('event', 'conversion', {
-          send_to: ADS_LEAD_LABEL,
-          value: 1.0,
-          currency: 'USD'
-        });
-      }
     } else if (a.classList.contains('btn')) {
       track('cta_click', { label: a.textContent.trim(), href: href });
     } else if (href.indexOf('mailto:') === 0) {
