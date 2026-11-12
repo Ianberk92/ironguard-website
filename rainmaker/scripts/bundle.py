@@ -60,14 +60,28 @@ nav.top a{{color:var(--ink2);text-decoration:none;padding:4px 2px}}nav.top a.act
 {''.join(templates)}
 <script>
 (function(){{
-  function show(){{
-    var slug=(location.hash||'#00_START_HERE').slice(1);
+  // Switch views by direct click handling; hash updates are optional because some
+  // embedded viewers (sandboxed preview panes) block or ignore hash navigation.
+  var current='';
+  function show(slug){{
+    slug=slug||'00_START_HERE';
     var t=document.getElementById('t-'+slug)||document.getElementById('t-home');
+    if(!t) return;
+    current=slug;
     var v=document.getElementById('view'); v.innerHTML=''; v.appendChild(t.content.cloneNode(true));
     document.querySelectorAll('nav.top a').forEach(function(a){{a.classList.toggle('active',a.dataset.slug===slug);}});
-    window.scrollTo(0,0);
+    try{{window.scrollTo(0,0);}}catch(e){{}}
   }}
-  window.addEventListener('hashchange',show); show();
+  document.addEventListener('click',function(e){{
+    var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a) return;
+    var slug=a.getAttribute('href').slice(1); if(!slug) return;
+    if(!document.getElementById('t-'+slug)) return;   // same-page anchors fall through
+    e.preventDefault(); show(slug);
+    try{{history.replaceState(null,'','#'+slug);}}catch(err){{}}
+  }});
+  window.addEventListener('hashchange',function(){{var s=location.hash.slice(1); if(s&&s!==current) show(s);}});
+  var start=''; try{{start=location.hash.slice(1);}}catch(e){{}}
+  show(start);
 }})();
 </script></body></html>"""
     out = site / "rainmaker_offline.html"
