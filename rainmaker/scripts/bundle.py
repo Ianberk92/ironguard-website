@@ -43,7 +43,7 @@ def main() -> None:
     templates = [f'<template id="t-home">{localize(body_of(home))}</template>']
     for slug, doc in pages.items():
         templates.append(f'<template id="t-{html.escape(slug)}">{localize(body_of(doc))}</template>')
-    nav = [("Start here", "00_START_HERE"), ("Money", "07_money_on_one_screen"), ("Checklist", "06_checklist_by_date"), ("Dashboard", "home"), ("Plan", "04_make_it_work"), ("Executive summary", "A_executive_summary"), ("Decisions", "00_decisions_and_defaults"), ("Sales plan", "02_head_of_sales_plan"), ("Financials", "03_financial_reality"), ("Targets", "P_target_accounts"),
+    nav = [("Start here", "00_START_HERE"), ("Money", "07_money_on_one_screen"), ("Action plan", "11_ceo_action_plan"), ("Cash plan", "09_cash_and_debt_plan"), ("Dashboard", "home"), ("Plan", "04_make_it_work"), ("Executive summary", "A_executive_summary"), ("Decisions", "00_decisions_and_defaults"), ("Sales plan", "02_head_of_sales_plan"), ("Financials", "03_financial_reality"), ("Targets", "P_target_accounts"),
            ("Top-3 plan", "F_top3_recruitment_plan"), ("Playbook", "F2_approach_and_offer_playbook"), ("Economics", "G_compensation_economics_model"),
            ("Revenue plan", "H2_revenue_confidence_plan"), ("Rankings", "06_rankings"), ("Companies", "B_target_company_intelligence"), ("All documents", "index")]
     nav_html = "".join(f'<a href="#{slug}" data-slug="{slug}">{label}</a>' for label, slug in nav)
