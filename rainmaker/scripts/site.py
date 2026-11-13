@@ -86,6 +86,7 @@ except ImportError:  # minimal fallback: headings, lists, tables, paragraphs, bo
 # Navigation: (label, published page or section)
 NAV = [
     ("Start here", "pages/00_START_HERE.html"),
+    ("Next 6 weeks", "pages/21_next_6_weeks.html"),
     ("Whole plan", "pages/20_the_whole_plan.html"),
     ("Money", "pages/07_money_on_one_screen.html"),
     ("Calendar", "pages/13_daily_cash_calendar.html"),
