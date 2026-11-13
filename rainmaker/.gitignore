@@ -1,0 +1,16 @@
+# Everything that can name a real person stays out of this PUBLIC repository.
+data/
+candidates/
+reports/
+outreach/
+dashboard/
+logs/
+checkpoints/
+sources/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+__pycache__/
+*.pyc
+.env
