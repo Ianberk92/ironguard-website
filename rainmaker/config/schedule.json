@@ -1,0 +1,23 @@
+{
+  "_comment": "PROPOSED recurring discovery schedule. NOT CREATED. Requires CEO approval because it consumes Claude usage and runs unattended.",
+  "name": "Rainmaker weekly talent discovery",
+  "mechanism_options": [
+    {
+      "type": "claude_scheduled_task",
+      "description": "Claude Code scheduled task that starts a fresh cloud session in this repository's environment and runs the weekly prompt.",
+      "cron_expression": "CRON_TZ=America/Los_Angeles 42 5 * * 2",
+      "prompt_file": "rainmaker/checkpoints/weekly_prompt_<date>.md (regenerate first with: python3 rainmaker/scripts/weekly_discovery.py --plan)",
+      "prompt_summary": "Run the weekly discovery queries, write new candidates to data/raw/r<N>/, re-validate top 20, run the pipeline, summarize reports/weekly_intel_<date>.md. Never contact anyone.",
+      "requirements": ["repository access", "web search enabled", "private storage for data/ (not the public website repo)"],
+      "cost": "Claude usage only; no paid APIs"
+    },
+    {
+      "type": "local_cron",
+      "description": "On a workstation with Claude Code installed and logged in.",
+      "crontab_line": "42 5 * * 2 cd /path/to/rainmaker && python3 scripts/weekly_discovery.py --plan && claude -p \"$(cat checkpoints/weekly_prompt_$(date +%F).md)\" --permission-mode acceptEdits >> logs/weekly_cron.log 2>&1",
+      "cost": "Claude usage only"
+    }
+  ],
+  "status": "proposed_not_configured",
+  "verified": false
+}
