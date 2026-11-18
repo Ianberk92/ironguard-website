@@ -121,6 +121,18 @@
       var size = form.querySelector('#f-size') ? form.querySelector('#f-size').value : '';
       var driver = form.querySelector('#f-driver') ? form.querySelector('#f-driver').value : '';
       var details = form.querySelector('#f-details') ? form.querySelector('#f-details').value.trim() : '';
+      /* Campaign landing pages mark what the visitor asked for (data-interest).
+         It travels in the details text so the existing email flow needs no change. */
+      var interest = form.getAttribute('data-interest') || '';
+      if (interest) { details = '[Interest: ' + interest + '] ' + details; }
+      /* Carry the first-touch source in the same text, so the inquiry email
+         (and anything that reads it) knows which campaign produced the lead. */
+      try {
+        var src = JSON.parse(sessionStorage.getItem('ig_attr') || '{}');
+        if (src.utm_source || src.utm_campaign) {
+          details = '[Source: ' + (src.utm_source || '-') + ' / ' + (src.utm_medium || '-') + ' / ' + (src.utm_campaign || '-') + ' | landed on ' + (src.landing || '-') + '] ' + details;
+        }
+      } catch (e3) { /* attribution is best effort */ }
 
       /* Submission posts to a Power Automate flow that emails the inquiry.
          Spam (honeypot/too-fast) gets the same thank-you without a send.
@@ -176,8 +188,22 @@
          history. Real submissions only; no-op if the HubSpot script is absent. */
       function identifyInHubSpot() {
         try {
+          var attr = {};
+          try { attr = JSON.parse(sessionStorage.getItem('ig_attr') || '{}'); } catch (e2) {}
           var _hsq = window._hsq = window._hsq || [];
-          _hsq.push(['identify', { email: email, firstname: name.split(' ')[0] || '' }]);
+          _hsq.push(['identify', {
+            email: email,
+            firstname: name.split(' ')[0] || '',
+            lastname: name.split(' ').slice(1).join(' '),
+            company_size: size,
+            inquiry_driver: driver,
+            service_interest: interest,
+            conversion_page: location.pathname,
+            first_touch_source: attr.utm_source || '',
+            first_touch_medium: attr.utm_medium || '',
+            first_touch_campaign: attr.utm_campaign || '',
+            first_touch_landing_page: attr.landing || ''
+          }]);
           _hsq.push(['trackPageView']);
         } catch (e) { /* best effort */ }
       }
