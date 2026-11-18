@@ -2,6 +2,38 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Google tag (gtag.js) — GA4 property G-PZR9WW3QEG -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-PZR9WW3QEG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  if (navigator.globalPrivacyControl) { gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' }); }
+  gtag('js', new Date());
+  gtag('config', 'G-PZR9WW3QEG');
+  /* First-touch attribution, same shape as js/main.js, so a visitor who lands
+     here from a tagged link keeps that source when they reach the contact form. */
+  try {
+    if (!sessionStorage.getItem('ig_attr')) {
+      var q = new URLSearchParams(location.search);
+      sessionStorage.setItem('ig_attr', JSON.stringify({
+        utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '',
+        utm_campaign: q.get('utm_campaign') || '', utm_term: q.get('utm_term') || '',
+        gclid: q.get('gclid') || '', referrer: document.referrer || '', landing: location.pathname
+      }));
+    }
+  } catch (e) {}
+</script>
+<meta name="description" content="Five questions every executive should be able to answer about who owns their company's IT. Print it, ask them, score the answers. Free, no email required.">
+<link rel="canonical" href="https://www.ironguardit.com/lead-magnet/executive-it-ownership-checklist.html">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Ironguard IT">
+<meta property="og:title" content="The Executive IT Ownership Checklist | Ironguard IT">
+<meta property="og:description" content="What every executive should be able to answer about who owns their company's IT. Free, no email.">
+<meta property="og:url" content="https://www.ironguardit.com/lead-magnet/executive-it-ownership-checklist.html">
+<meta property="og:image" content="https://www.ironguardit.com/assets/og-card.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <title>The Executive IT Ownership Checklist — Ironguard IT</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,7 +126,7 @@
   </div>
 
   <div class="foot">
-    <div class="cta">Want the gaps mapped for you? <span>Build your IT plan &rarr; ironguardit.com</span></div>
+    <div class="cta">Want the gaps mapped for you? <span><a href="../contact.html" style="color:inherit">Build your IT plan &rarr; ironguardit.com</a> &middot; <a href="../scorecard.html" style="color:inherit">or take the 2-minute scorecard</a></span></div>
     <div class="brand">
       <svg width="26" height="26" viewBox="0 0 100 100" fill="none">
         <path d="M14 14 H50 V26 H26 V74 H36 V86 H14 Z" fill="#0E1B2A"/>
