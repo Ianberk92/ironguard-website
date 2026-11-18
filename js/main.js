@@ -125,6 +125,14 @@
          It travels in the details text so the existing email flow needs no change. */
       var interest = form.getAttribute('data-interest') || '';
       if (interest) { details = '[Interest: ' + interest + '] ' + details; }
+      /* Carry the first-touch source in the same text, so the inquiry email
+         (and anything that reads it) knows which campaign produced the lead. */
+      try {
+        var src = JSON.parse(sessionStorage.getItem('ig_attr') || '{}');
+        if (src.utm_source || src.utm_campaign) {
+          details = '[Source: ' + (src.utm_source || '-') + ' / ' + (src.utm_medium || '-') + ' / ' + (src.utm_campaign || '-') + ' | landed on ' + (src.landing || '-') + '] ' + details;
+        }
+      } catch (e3) { /* attribution is best effort */ }
 
       /* Submission posts to a Power Automate flow that emails the inquiry.
          Spam (honeypot/too-fast) gets the same thank-you without a send.
