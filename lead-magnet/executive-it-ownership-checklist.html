@@ -65,6 +65,11 @@
   .foot .cta { font-family:'Sora',sans-serif; font-weight:600; font-size:12px; }
   .foot .cta span { color:var(--ember); }
   .brand { display:flex; align-items:center; gap:8px; font-family:'Sora',sans-serif; font-weight:600; font-size:12px; }
+  @media screen and (max-width: 860px) {
+    .page { width:auto; min-height:0; padding:24px 20px; }
+    .head { margin:-24px -20px 24px; padding:28px 20px 26px; }
+    .foot { position:static; flex-wrap:wrap; gap:14px; margin-top:24px; }
+  }
 </style>
 </head>
 <body>
