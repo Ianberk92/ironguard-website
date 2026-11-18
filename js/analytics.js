@@ -19,6 +19,18 @@
     window.gtag('config', ADS_ID);
   }
 
+  /* HubSpot tracking code (portal 246960342, the CRM of record). It lets HubSpot
+     show which pages a known contact viewed and where visitors come from.
+     Not loaded when the browser sends Global Privacy Control. */
+  if (!navigator.globalPrivacyControl && !document.getElementById('hs-script-loader')) {
+    var hs = document.createElement('script');
+    hs.id = 'hs-script-loader';
+    hs.async = true;
+    hs.defer = true;
+    hs.src = 'https://js-na2.hs-scripts.com/246960342.js';
+    document.head.appendChild(hs);
+  }
+
   function track(event, params) {
     var payload = Object.assign({ page: location.pathname }, params || {});
     /* gtag (GA4) is the live pipeline; the dataLayer object push remains for a

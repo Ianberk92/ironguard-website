@@ -172,7 +172,18 @@
         showThanks(true);
       }
 
+      /* Tell HubSpot who this visitor is, so the inquiry is tied to their page
+         history. Real submissions only; no-op if the HubSpot script is absent. */
+      function identifyInHubSpot() {
+        try {
+          var _hsq = window._hsq = window._hsq || [];
+          _hsq.push(['identify', { email: email, firstname: name.split(' ')[0] || '' }]);
+          _hsq.push(['trackPageView']);
+        } catch (e) { /* best effort */ }
+      }
+
       if (isSpam) { showThanks(false); return; }
+      identifyInHubSpot();
 
       fetch(ENDPOINT, {
         method: 'POST',
