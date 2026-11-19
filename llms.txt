@@ -37,4 +37,15 @@ service. AI governance is a core offering.
 - [IT Ownership Scorecard](/scorecard.html)
 - [Contact](/contact.html)
 
+## Who Ironguard IT is a good fit for
+- Companies of 25 to 500 people, typically 50 to 500, that want one accountable team for all of IT.
+- Multi-site companies: head office plus branch offices, labs, job sites or field teams.
+- Construction, engineering, technology and professional services firms.
+- Companies in Carlsbad, North County San Diego and San Diego County that want on-site work when hardware is involved, and multi-site teams elsewhere in the United States supported remotely.
+- Buyers who want the price in writing before a sales call: managed IT is published at $150 to $200 per user per month.
+- Companies with their own IT person who need a partner alongside them (co-managed IT).
+
+## Who it is not a fit for
+- Companies with fewer than 25 users. Managed plans start at 25 users.
+
 Contact: contact@ironguardit.com (new inquiries), support@ironguardit.com or https://halopsa.ironguardit.com/portal (existing clients).
