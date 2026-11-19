@@ -160,11 +160,14 @@
            Never called on the spam path — only real submissions count. */
         if (typeof window.gtag === 'function') {
           window.gtag('event', 'form_submit', { form_destination: method, page: location.pathname });
-          window.gtag('event', 'conversion', {
-            send_to: 'AW-18483507018/HXECCJbj-4odEMrez-1E',
-            value: 1.0,
-            currency: 'USD'
-          });
+          /* Sent only while Google Ads is switched on in analytics.js. */
+          if (window.IG_ADS_ENABLED) {
+            window.gtag('event', 'conversion', {
+              send_to: 'AW-18483507018/HXECCJbj-4odEMrez-1E',
+              value: 1.0,
+              currency: 'USD'
+            });
+          }
         }
       }
 
