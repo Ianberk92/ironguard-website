@@ -222,6 +222,7 @@ section { padding: clamp(80px, 9vw, 128px) 0; position: relative; }
 .stat .l { font-size: 14px; color: #8E9AA8; margin-top: 8px; }
 .stat .l strong { color: #C9D1DA; font-weight: 600; }
 @media (min-width: 760px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 760px) { .stats.three { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 759px) { .stats { grid-template-columns: 1fr 1fr; } .stat { border-left: 0; padding-left: 0; } }
 .marquee { border-top: 1px solid var(--line-dark); overflow: hidden; padding: 16px 0; background: var(--carbon); }
 .marquee-track { display: flex; gap: 48px; width: max-content; animation: marquee 38s linear infinite; }
