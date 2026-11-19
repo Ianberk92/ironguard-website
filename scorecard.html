@@ -52,6 +52,14 @@
     .sc-next .actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 20px 0 0; }
     .sc-next .retake { font-size: 14px; color: var(--steel); margin: 18px 0 0; }
     #scorecard > .btn { width: 100%; justify-content: center; margin-top: 8px; }
+    /* Optional "email me my results" box (results stay instant; no email required). */
+    #sc-optin { margin: 20px 0 24px; padding: 20px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+    #sc-optin label { display: block; font-weight: 600; color: var(--carbon); margin-bottom: 12px; }
+    .sc-optin-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .sc-optin-row input[type="email"] { flex: 1; min-width: 220px; padding: 12px 14px; border: 1px solid #CBD2DA; border-radius: 8px; font: inherit; }
+    .sc-optin-row input[type="email"].bad { border-color: #C0392B; }
+    .sc-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+    .sc-optin-note { font-size: 14px; color: var(--steel); margin: 12px 0 0; }
   </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "WebPage", "@id": "https://www.ironguardit.com/scorecard.html#webpage", "url": "https://www.ironguardit.com/scorecard.html", "name": "The IT Ownership Scorecard", "description": "Twelve questions a COO or CFO can answer in two minutes. Instant grade on how well your IT is actually owned — no email required.", "isPartOf": {"@type": "WebSite", "@id": "https://www.ironguardit.com/#website", "url": "https://www.ironguardit.com/", "name": "Ironguard IT"}, "publisher": {"@id": "https://www.ironguardit.com/#organization"}, "breadcrumb": {"@id": "https://www.ironguardit.com/scorecard.html#breadcrumb"}}, {"@type": "BreadcrumbList", "@id": "https://www.ironguardit.com/scorecard.html#breadcrumb", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ironguardit.com/"}, {"@type": "ListItem", "position": 2, "name": "The IT Ownership Scorecard", "item": "https://www.ironguardit.com/scorecard.html"}]}]}</script>
 </head>
@@ -232,6 +240,15 @@
         <div class="sc-next">
           <h3>What to do with this</h3>
           <p>Every 0-point answer is a finding: a place where nobody owns the outcome today. Bring this scorecard to a meeting and we will map each gap to a fix, in plain language, whether or not we ever work together.</p>
+          <form id="sc-optin" novalidate>
+            <label for="sc-optin-email">Want this emailed to you, with the 3 fixes we would start with?</label>
+            <div class="sc-optin-row">
+              <input type="email" id="sc-optin-email" name="email" autocomplete="email" inputmode="email" placeholder="you@company.com">
+              <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" class="sc-hp">
+              <button type="submit" class="btn btn-dark">Email me my results</button>
+            </div>
+            <p class="sc-optin-note" id="sc-optin-note">Optional. One email from a real person, within one business day. No drip campaign.</p>
+          </form>
           <div id="sc-cta-review" hidden>
             <p style="margin: 0; color: var(--carbon); font-weight: 500;">These are the controls insurers ask about on renewal.</p>
             <div class="actions">
@@ -257,6 +274,8 @@
   'use strict';
   var form = document.getElementById('scorecard');
   if (!form) return;
+  /* Same Power Automate endpoint as the contact form in js/main.js: keep the two in sync. */
+  var SC_ENDPOINT = 'https://default579ee38616f74687a68658259001b2.ee.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/07/workflows/35676cc09af445cc99e87d829a618ee4/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=VXwfeCbA_oX56ZxP-PLXvHfeexLxeQKATzv-wOsykPY';
   var CATS = { own: 'OWNERSHIP', sec: 'SECURITY', ops: 'OPERATIONS', cost: 'COST CONTROL' };
   var GRADES = [
     [21, 'A', 'Your IT has a real owner.', 'That is rare, and worth protecting. An independent check of your insurance controls is still worth doing, but whoever runs your IT is doing the job.'],
@@ -320,6 +339,45 @@
         '&body=' + encodeURIComponent(lines.join('\n'));
       window.dataLayer.push({ event: 'scorecard_email', grade: g[1] });
     };
+    /* Optional opt-in: posts the result to the same Power Automate flow the
+       contact form uses, so the team can reply with the result and first fixes.
+       Never required: the grade above is already shown. */
+    var optin = document.getElementById('sc-optin');
+    if (optin) {
+      optin.onsubmit = function (ev) {
+        ev.preventDefault();
+        var input = document.getElementById('sc-optin-email');
+        var note = document.getElementById('sc-optin-note');
+        var email = (input.value || '').trim();
+        var ok = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+        input.classList.toggle('bad', !ok);
+        if (!ok) { note.textContent = 'Please enter a valid email address.'; return; }
+        if (optin.elements.website && optin.elements.website.value) { optin.hidden = true; return; } /* bot */
+        var lines = ['IT Ownership Scorecard: grade ' + g[1] + ' (' + total + '/24)'];
+        Object.keys(CATS).forEach(function (k) { lines.push(CATS[k] + ': ' + cats[k] + '/6'); });
+        var attribution = {};
+        try { attribution = JSON.parse(sessionStorage.getItem('ig_attr') || '{}'); } catch (x) {}
+        var btn = optin.querySelector('button');
+        btn.disabled = true;
+        fetch(SC_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: 'Scorecard request', email: email, size: '',
+            driver: 'Scorecard: email me my results',
+            details: lines.join(' | '), page: location.pathname, attribution: attribution
+          })
+        }).then(function (res) {
+          if (!res.ok) throw new Error('send failed');
+          optin.innerHTML = '<p style="margin:0; font-weight:600; color: var(--carbon);">Sent. You will hear from a real person within one business day.</p>';
+          if (typeof window.gtag === 'function') window.gtag('event', 'scorecard_optin', { grade: g[1], page: location.pathname });
+          window.dataLayer.push({ event: 'scorecard_optin', grade: g[1] });
+        }).catch(function () {
+          btn.disabled = false;
+          note.innerHTML = 'That did not send. Please email <a href="mailto:contact@ironguardit.com">contact@ironguardit.com</a> and we will reply the same way.';
+        });
+      };
+    }
     document.getElementById('sc-email').onclick = emailMe;
     document.getElementById('sc-email-alt').onclick = emailMe;
   });
