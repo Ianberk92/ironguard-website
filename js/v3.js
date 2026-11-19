@@ -61,15 +61,21 @@
   });
 })();
 
-/* Pricing estimator: headcount × published range ($150–$200 per user). */
+/* Pricing estimator: headcount x the published per-user range of each level. */
 (function () {
   var r = document.getElementById('est-users'); if (!r) return;
-  var out = document.getElementById('est-users-out'), range = document.getElementById('est-range');
+  var out = document.getElementById('est-users-out');
+  var l1 = document.getElementById('est-l1'), l2 = document.getElementById('est-l2'), l3 = document.getElementById('est-l3');
+  var legacy = document.getElementById('est-range');
   function fmt(n) { return '$' + n.toLocaleString('en-US'); }
+  function span(n, lo, hi) { return fmt(n * lo) + ' &ndash; ' + fmt(n * hi); }
   function update() {
     var n = +r.value;
     out.textContent = n === 300 ? '300+' : n;
-    range.innerHTML = fmt(n * 150) + ' &ndash; ' + fmt(n * 200);
+    if (l1) { var small = n < 40; l1.innerHTML = small ? 'from ' + fmt(n * 115) : 'Teams under 40'; l1.classList.toggle('est-na', !small); }
+    if (l2) l2.innerHTML = span(n, 150, 165);
+    if (l3) l3.innerHTML = span(n, 185, 200);
+    if (legacy) legacy.innerHTML = span(n, 150, 200);
   }
   r.addEventListener('input', update); update();
 })();

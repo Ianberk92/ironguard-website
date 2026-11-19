@@ -549,3 +549,25 @@ h1, h2, h3 { text-wrap: balance; }
   table.data td { border-bottom: 0; padding: 8px 12px; }
   table.data td[data-label]::before { content: attr(data-label); display: block; font: 600 11.5px/1.3 var(--font-body); letter-spacing: .08em; text-transform: uppercase; color: var(--steel); margin-bottom: 4px; }
 }
+
+/* ============ Pricing levels ============ */
+.tiers { display: grid; gap: 20px; }
+.tier { background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(26px, 3vw, 34px); box-shadow: var(--shadow-md); }
+.tier h3 { font-size: 23px; margin-bottom: 8px; }
+.tier .for { color: var(--ink-soft); font-size: 15.5px; line-height: 1.5; margin: 0 0 20px; }
+.tier .amount { font: 700 clamp(36px, 3.6vw, 44px)/1.05 var(--font-head); color: var(--carbon); letter-spacing: -0.025em; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
+.tier .amount small { font: 600 14px/1.3 var(--font-body); color: var(--steel); letter-spacing: 0; }
+.tier .amount .unit { flex-basis: 100%; }
+.tier .plus { font: 600 14px/1.35 var(--font-body); color: var(--carbon); margin: 22px 0 14px; padding-top: 20px; border-top: 1px solid var(--line); }
+.tier .includes { grid-template-columns: 1fr; margin: 0; font-size: 15px; }
+.tiers-note { margin: 22px 0 0; color: var(--ink-soft); font-size: 15.5px; max-width: 80ch; }
+.tiers-note a { color: var(--carbon); text-decoration: underline; text-decoration-color: var(--forge); text-underline-offset: 3px; }
+.tiers + .price-band, .tiers-note + .price-band { margin-top: clamp(28px, 4vw, 44px); }
+.price-main > h3 { font-size: 24px; margin-bottom: 18px; }
+.est-result.est-levels { grid-template-columns: 1fr; gap: 0; padding: 6px 0 10px; }
+.est-result.est-levels > div { display: grid; gap: 5px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.est-result.est-levels > div:last-child { border-bottom: 0; }
+.est-result.est-levels .est-v { font-size: 21px; }
+.est-result.est-levels .est-v.est-na { font: 600 14.5px/1.3 var(--font-body); color: var(--steel); letter-spacing: 0; }
+@media (min-width: 560px) { .est-result.est-levels > div { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; } .est-result.est-levels .est-v { text-align: right; white-space: nowrap; } }
+@media (min-width: 960px) { .tiers { grid-template-columns: repeat(3, 1fr); gap: 22px; } .tier .for { min-height: 3em; } }
