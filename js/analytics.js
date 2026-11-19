@@ -15,20 +15,37 @@
   var ADS_ID = 'AW-18483507018';
   /* The "Submit lead form" conversion (label HXECCJbj-4odEMrez-1E) is sent from
      main.js only, after the contact form is accepted. */
-  if (typeof window.gtag === 'function') {
+  /* Google Ads is paused (November 2026), so its tag is not loaded: it added
+     about 65 KB of script and a third-party cookie to every page for nothing.
+     Set ADS_ENABLED to true before any campaign runs again. */
+  var ADS_ENABLED = false;
+  window.IG_ADS_ENABLED = ADS_ENABLED;
+  if (ADS_ENABLED && typeof window.gtag === 'function') {
     window.gtag('config', ADS_ID);
   }
 
   /* HubSpot tracking code (portal 246960342, the CRM of record). It lets HubSpot
      show which pages a known contact viewed and where visitors come from.
      Not loaded when the browser sends Global Privacy Control. */
-  if (!navigator.globalPrivacyControl && !document.getElementById('hs-script-loader')) {
+  /* Loaded after the page has finished and the browser is idle, so it never
+     delays what the visitor sees. If someone starts the form first, it loads
+     at once so the inquiry is still tied to their visit. */
+  function loadHubSpot() {
+    if (navigator.globalPrivacyControl || document.getElementById('hs-script-loader')) return;
     var hs = document.createElement('script');
     hs.id = 'hs-script-loader';
     hs.async = true;
     hs.defer = true;
     hs.src = 'https://js-na2.hs-scripts.com/246960342.js';
     document.head.appendChild(hs);
+  }
+  window.IG_loadHubSpot = loadHubSpot;
+  if (!navigator.globalPrivacyControl) {
+    var whenIdle = function () {
+      if ('requestIdleCallback' in window) { window.requestIdleCallback(loadHubSpot, { timeout: 4000 }); }
+      else { setTimeout(loadHubSpot, 2000); }
+    };
+    if (document.readyState === 'complete') { whenIdle(); } else { window.addEventListener('load', whenIdle); }
   }
 
   function track(event, params) {
@@ -65,7 +82,7 @@
   if (form) {
     var started = false;
     form.addEventListener('input', function () {
-      if (!started) { started = true; track('form_start'); }
+      if (!started) { started = true; loadHubSpot(); track('form_start'); }
     });
     form.addEventListener('submit', function () {
       track('form_submit');
