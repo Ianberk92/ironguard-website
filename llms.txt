@@ -4,9 +4,10 @@
 > (50-500 employees). Based in Carlsbad, California, serving San Diego County and
 > multi-site teams across the United States. Tagline: "IT that takes ownership."
 
-Pricing is public: managed IT starts at $150 per user per month, with engagements priced
-between $150 and $200 per user depending on security requirements, sites and onsite needs.
-The service covers employee support, a security baseline (identity, MFA, endpoints, email,
+Pricing is public, in three levels per user per month: Essentials from $115 (cloud-only
+companies on one site, under 40 people), Managed at $150 to $165 (servers or Azure, several
+sites, field crews) and Managed + Security at $185 to $200 (compliance, insurance or client
+security requirements). The Managed level covers employee support, a security baseline (identity, MFA, endpoints, email,
 backup), Microsoft 365 or Google Workspace administration, device lifecycle, vendor
 management and executive reporting. Dedicated onsite coverage, hardware, travel and major
 projects are scoped separately, in writing. Managed plans start at 25 users.
@@ -42,7 +43,7 @@ service. AI governance is a core offering.
 - Multi-site companies: head office plus branch offices, labs, job sites or field teams.
 - Construction, engineering, technology and professional services firms.
 - Companies in Carlsbad, North County San Diego and San Diego County that want on-site work when hardware is involved, and multi-site teams elsewhere in the United States supported remotely.
-- Buyers who want the price in writing before a sales call: managed IT is published at $150 to $200 per user per month.
+- Buyers who want the price in writing before a sales call: managed IT is published at $115 to $200 per user per month.
 - Companies with their own IT person who need a partner alongside them (co-managed IT).
 
 ## Who it is not a fit for
