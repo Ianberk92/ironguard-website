@@ -129,6 +129,59 @@ body.menu-open .site-header::before { background: var(--carbon); }
 .nav-mobile a.btn { display: flex; width: 100%; justify-content: center; margin-top: 28px; padding: 18px 24px; border: none; border-radius: 999px; font: 600 17px/1 var(--font-body); }
 @media (min-width: 1000px) { .nav-desktop { display: flex; } .nav-toggle { display: none; } }
 
+/* ---------- Dropdown navigation (desktop) ----------
+   Panels are always light (white card, dark text) so they read the same over a dark hero,
+   over a light page and on the solid header after scrolling. */
+.nav-desktop a.btn { color: #fff; }
+.nav-item { position: relative; display: flex; align-items: center; }
+.nav-trigger {
+  display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 8px 0; margin: 0; cursor: pointer;
+  font: 500 15px/1 var(--font-body); color: rgba(255,255,255,.78); transition: color .2s; position: relative;
+}
+.nav-trigger::after { content: ""; position: absolute; left: 0; right: 16px; bottom: -0px; height: 2px; background: var(--forge); transform: scaleX(0); transform-origin: left; transition: transform .25s var(--ease); }
+.nav-trigger .chev { width: 10px; height: 10px; transition: transform .2s var(--ease); flex: none; }
+.nav-trigger:hover, .nav-item.open .nav-trigger, .nav-trigger.is-current { color: #fff; }
+.nav-item.open .nav-trigger::after, .nav-trigger.is-current::after { transform: scaleX(1); }
+.nav-item.open .nav-trigger .chev { transform: rotate(180deg); }
+.site-header.light .nav-trigger { color: var(--ink-soft); }
+.site-header.light .nav-trigger:hover, .site-header.light .nav-item.open .nav-trigger, .site-header.light .nav-trigger.is-current { color: var(--carbon); }
+.nav-desktop a[aria-current="page"]:not(.btn) { color: #fff; }
+.site-header.light .nav-desktop a[aria-current="page"]:not(.btn) { color: var(--carbon); }
+.nav-trigger:focus-visible, .nav-desktop a:focus-visible:not(.btn), .nav-dd a:focus-visible { outline: 3px solid var(--trust-light); outline-offset: 4px; border-radius: 4px; }
+.nav-dd { position: absolute; top: 100%; left: -18px; padding-top: 14px; display: none; z-index: 70; }
+.nav-item.open .nav-dd { display: block; }
+html:not(.nav-js) .nav-item:hover .nav-dd, html:not(.nav-js) .nav-item:focus-within .nav-dd { display: block; }
+.nav-dd ul {
+  list-style: none; margin: 0; padding: 10px; min-width: 268px; background: #fff; border: 1px solid var(--line);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-lg);
+}
+.nav-dd li + li.all { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); }
+.nav-desktop .nav-dd a { display: block; padding: 11px 14px; border-radius: var(--r); font: 500 15px/1.3 var(--font-body); color: var(--ink); white-space: nowrap; }
+.nav-desktop .nav-dd a::after { display: none; }
+.nav-desktop .nav-dd a:hover { background: var(--cloud); color: var(--carbon); }
+.nav-desktop .nav-dd a[aria-current="page"] { background: var(--cloud); color: var(--carbon); font-weight: 600; box-shadow: inset 3px 0 0 var(--forge); }
+.nav-desktop .nav-dd li.all a { color: var(--ember); font-weight: 600; }
+.nav-desktop .nav-dd li.all a:hover { color: var(--ember); }
+@media (min-width: 1000px) and (max-width: 1120px) { .nav-desktop { gap: 24px; } }
+@media (prefers-reduced-motion: reduce) { .nav-trigger .chev, .nav-trigger::after { transition: none; } }
+
+/* ---------- Grouped menu (phone) ---------- */
+.mnav-toggle {
+  display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 16px; background: none; border: 0;
+  border-bottom: 1px solid var(--line-dark); padding: 18px 0; margin: 0; cursor: pointer; text-align: left;
+  font: 600 24px/1.2 var(--font-head); color: #fff;
+}
+.mnav-toggle .chev { width: 16px; height: 16px; color: var(--forge); transition: transform .2s var(--ease); flex: none; }
+.mnav-toggle[aria-expanded="true"] .chev { transform: rotate(180deg); }
+.mnav-toggle:focus-visible, .nav-mobile a:focus-visible { outline: 3px solid var(--trust-light); outline-offset: 2px; }
+.mnav-panel { padding: 6px 0 14px; border-bottom: 1px solid var(--line-dark); }
+.mnav-panel[hidden] { display: none; }
+.nav-mobile .mnav-panel a { padding: 12px 0 12px 16px; font: 500 17px/1.3 var(--font-body); color: #C9D1DA; border-bottom: 0; border-left: 2px solid rgba(255,255,255,.12); }
+.nav-mobile .mnav-panel a[aria-current="page"] { color: #fff; border-left-color: var(--forge); }
+.nav-mobile .mnav-panel a.all { color: var(--forge-2); font-weight: 600; }
+/* The last menu opens towards the left so it never runs off a narrow screen. */
+.nav-desktop .nav-item:last-of-type .nav-dd { left: auto; right: -18px; }
+
 /* ---------- Sections ---------- */
 section { padding: clamp(80px, 9vw, 128px) 0; position: relative; }
 .on-dark { background: var(--carbon); color: #C9D1DA; }

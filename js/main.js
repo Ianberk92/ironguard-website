@@ -10,7 +10,7 @@
   var menu = document.querySelector('.nav-mobile');
 
   if (toggle && menu) {
-    var firstLink = menu.querySelector('a');
+    var firstLink = menu.querySelector('a, button');
 
     function openMenu(fromKeyboard) {
       menu.classList.add('open');
@@ -42,6 +42,57 @@
       if (e.target.closest('a')) closeMenu(false);
     });
   }
+
+  /* ---------- Dropdown menus (desktop) and grouped menu (phone) ----------
+     Desktop: opens on hover, click/tap or keyboard; Escape and outside clicks close it.
+     Phone: each group is a button that expands its links in place. */
+  document.documentElement.classList.add('nav-js');
+  var navItems = Array.prototype.slice.call(document.querySelectorAll('.nav-desktop .nav-item'));
+  var hoverable = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+
+  function setOpen(item, open) {
+    item.classList.toggle('open', open);
+    var t = item.querySelector('.nav-trigger');
+    if (t) t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  function closeAll(except) { navItems.forEach(function (it) { if (it !== except) setOpen(it, false); }); }
+
+  navItems.forEach(function (item) {
+    var trigger = item.querySelector('.nav-trigger');
+    var timer;
+    trigger.addEventListener('click', function () {
+      // A mouse click right after hover-open keeps the menu open instead of toggling it shut.
+      var open = item.dataset.hover === '1' ? true : !item.classList.contains('open');
+      item.dataset.hover = '';
+      closeAll(item); setOpen(item, open);
+    });
+    if (hoverable) {
+      item.addEventListener('mouseenter', function () { clearTimeout(timer); closeAll(item); item.dataset.hover = item.classList.contains('open') ? '' : '1'; setOpen(item, true); });
+      item.addEventListener('mouseleave', function () { item.dataset.hover = ''; timer = setTimeout(function () { setOpen(item, false); }, 160); });
+    }
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && item.classList.contains('open')) { setOpen(item, false); trigger.focus(); }
+      if (e.key === 'ArrowDown' && document.activeElement === trigger) {
+        e.preventDefault(); setOpen(item, true);
+        var first = item.querySelector('.nav-dd a'); if (first) first.focus();
+      }
+    });
+    item.addEventListener('focusout', function (e) {
+      if (!item.contains(e.relatedTarget)) setOpen(item, false);
+    });
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.nav-item')) closeAll(null);
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('.mnav-toggle'), function (btn) {
+    btn.addEventListener('click', function () {
+      var panel = document.getElementById(btn.getAttribute('aria-controls'));
+      var open = btn.getAttribute('aria-expanded') !== 'true';
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (panel) panel.hidden = !open;
+    });
+  });
 
   /* ---------- Section reveal: 12px upward fade, runs once ---------- */
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
