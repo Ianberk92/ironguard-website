@@ -11,8 +11,7 @@ company with offices, labs, warehouses and field sites in several states. What i
 written standard for every site (new sites launch on a dated checklist; cutovers have rollback
 plans), ownership in writing (a named owner, 26 written operating procedures, exclusions in
 writing, client-owned credentials and accounts, a 90-day start then month to month on 60 days'
-notice, same-day offboarding), and fast, senior response (just over 8 minutes average first
-response (November 2026)).
+notice, same-day offboarding), and fast, senior response (a median first response of about 8 minutes (November 2026)).
 
 Pricing is public, in three levels per user per month: Essentials from $115 (cloud-only
 companies on one site, under 40 people), Managed at $150 to $165 (servers or Azure, several
