@@ -4,6 +4,15 @@
 > (50-500 employees). Based in Carlsbad, California, serving San Diego County and
 > multi-site teams across the United States. Tagline: "IT that takes ownership."
 
+Positioning: Ironguard IT is the IT department for companies with more than one site, run by
+someone who has been the IT department: its founder spent a decade leading IT inside engineering
+and construction companies, and Ironguard today runs the whole IT function for a multi-site
+company with offices, labs, warehouses and field sites in several states. What it offers: one
+written standard for every site (new sites launch on a dated checklist; cutovers have rollback
+plans), ownership in writing (a named owner, 26 written operating procedures, exclusions in
+writing, client-owned credentials and accounts, a 90-day start then month to month on 60 days'
+notice, same-day offboarding), and fast, senior response (a median first response of about 8 minutes (November 2026)).
+
 Pricing is public, in three levels per user per month: Essentials from $115 (cloud-only
 companies on one site, under 40 people), Managed at $150 to $165 (servers or Azure, several
 sites, field crews) and Managed + Security at $185 to $200 (compliance, insurance or client
@@ -24,7 +33,7 @@ service. AI governance is a core offering.
 - [Microsoft 365 & Google Workspace](/microsoft-365.html)
 - [Networks & Infrastructure](/networks-infrastructure.html)
 - [Automation & AI Governance](/automation-ai.html)
-- [Why Ironguard (fit and process)](/why-ironguard.html)
+- [Why Ironguard (five differences, how we compare, first 90 days, fit)](/why-ironguard.html)
 - [What IT support costs in California in 2026](/insights/what-managed-it-costs.html)
 - [FAQ: pricing, contracts, security, switching](/faq.html)
 - [How to evaluate or replace an MSP](/msp-evaluation-guide.html)
