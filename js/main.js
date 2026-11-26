@@ -144,6 +144,73 @@
 
     var loadedAt = Date.now();
 
+    /* ---------- Bot check (Cloudflare Turnstile) ----------
+       The site is static, so the Power Automate address below is public, and
+       the honeypot and timing checks only stop bots that use this page.
+       Turnstile gives each real visitor a one-time token. The flow sends the
+       token to Cloudflare to confirm it before any email goes out, so a request
+       posted straight to the flow without a valid token is rejected there.
+       TURNSTILE_SITEKEY is the public site key from the Cloudflare dashboard
+       (never the secret key, which lives only in the flow). While it is empty
+       the form works exactly as before: no widget, no token. */
+    var TURNSTILE_SITEKEY = '';
+    var ts = { requested: false, failed: false, token: '', askedOnce: false };
+
+    function loadBotCheck() {
+      if (!TURNSTILE_SITEKEY || ts.requested) return;
+      ts.requested = true;
+      var box = document.createElement('div');
+      box.className = 'form-check';
+      box.style.margin = '4px 0 18px';
+      form.insertBefore(box, form.querySelector('button[type="submit"]'));
+      window.igTurnstileReady = function () {
+        try {
+          window.turnstile.render(box, {
+            sitekey: TURNSTILE_SITEKEY,
+            action: 'contact',
+            theme: 'dark',
+            size: 'flexible',
+            callback: function (token) { ts.token = token; },
+            'expired-callback': function () { ts.token = ''; },
+            'error-callback': function () { ts.token = ''; }
+          });
+        } catch (err) { ts.failed = true; }
+      };
+      var s = document.createElement('script');
+      s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=igTurnstileReady';
+      s.async = true;
+      s.defer = true;
+      s.onerror = function () { ts.failed = true; };
+      document.head.appendChild(s);
+    }
+
+    /* Load the check when the form comes near the screen or gets focus, so the
+       token is usually ready before the visitor presses send. */
+    if ('IntersectionObserver' in window) {
+      var tsObserver = new IntersectionObserver(function (entries) {
+        if (entries.some(function (en) { return en.isIntersecting; })) {
+          tsObserver.disconnect();
+          loadBotCheck();
+        }
+      }, { rootMargin: '300px 0px' });
+      tsObserver.observe(form);
+    }
+    form.addEventListener('focusin', loadBotCheck);
+
+    /* Calls done(token) once a token exists, done('') when the check is off,
+       or done(null) when there is no token after a short wait. */
+    function withBotCheck(done) {
+      if (!TURNSTILE_SITEKEY) { done(''); return; }
+      loadBotCheck();
+      var waited = 0;
+      (function poll() {
+        if (ts.token) { done(ts.token); return; }
+        if (ts.failed || waited >= 5000) { done(null); return; }
+        waited += 250;
+        setTimeout(poll, 250);
+      })();
+    }
+
     form.addEventListener('submit', function (e) {
       e.preventDefault();
 
@@ -263,22 +330,53 @@
       }
 
       if (isSpam) { showThanks(false); return; }
-      identifyInHubSpot();
 
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: name, email: email, size: size,
-          driver: driver, details: details, page: location.pathname,
-          attribution: (function () {
-            try { return JSON.parse(sessionStorage.getItem('ig_attr') || '{}'); }
-            catch (e) { return {}; }
-          })()
-        })
-      }).then(function (res) {
-        if (res.ok) { trackLead('power_automate'); showThanks(false); } else { mailtoFallback(); }
-      }).catch(function () { mailtoFallback(); });
+      var sendBtn = form.querySelector('button[type="submit"]');
+      var statusEl = form.querySelector('.form-status');
+      if (sendBtn) sendBtn.disabled = true;
+
+      withBotCheck(function (token) {
+        if (token === null) {
+          /* No token yet. If the check loaded but is still waiting on the
+             visitor, ask once. If it could not load (blocked, offline) or is
+             still missing on the second try, open the email draft instead,
+             so no inquiry is ever lost. */
+          if (!ts.failed && !ts.askedOnce) {
+            ts.askedOnce = true;
+            if (sendBtn) sendBtn.disabled = false;
+            if (statusEl) {
+              statusEl.textContent = 'One quick check: finish the security box above the button, then press it again.';
+              statusEl.focus();
+            }
+            return;
+          }
+          identifyInHubSpot();
+          mailtoFallback();
+          return;
+        }
+
+        identifyInHubSpot();
+
+        /* The flow rejects anything without a valid token, a filled honeypot
+           or out-of-range fields, and answers with an error. Any error here
+           opens the email draft, so a real visitor still reaches us. */
+        fetch(ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: name, email: email, size: size,
+            driver: driver, details: details, page: location.pathname,
+            attribution: (function () {
+              try { return JSON.parse(sessionStorage.getItem('ig_attr') || '{}'); }
+              catch (e) { return {}; }
+            })(),
+            turnstileToken: token,
+            website: honeypot ? honeypot.value : ''
+          })
+        }).then(function (res) {
+          if (res.ok) { trackLead('power_automate'); showThanks(false); } else { mailtoFallback(); }
+        }).catch(function () { mailtoFallback(); });
+      });
     });
   }
 
